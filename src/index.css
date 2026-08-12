@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --brand-cream: #F9F7F4;
+    --brand-cream-dark: #F0EDE8;
+    --brand-black: #121210;
+    --brand-charcoal: #2A2A28;
+    --brand-gray: #6B6B68;
+    --brand-gray-light: #C8C6C2;
+    --brand-sand: #C8A882;
+    --brand-sand-dark: #A8845E;
+    --brand-sand-light: #E8D4BC;
+  }
+
+  body {
+    @apply bg-brand-cream text-brand-black antialiased font-body selection:bg-brand-sand selection:text-brand-black;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-1.5;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-brand-cream-dark;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-brand-gray-light hover:bg-brand-gray transition-colors;
+  }
+}
