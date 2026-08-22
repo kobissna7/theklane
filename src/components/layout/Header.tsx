@@ -77,16 +77,7 @@ export function Header() {
           </nav>
 
           {/* Logo center */}
-          <Link to="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2">
-            {/* Logo icon — crops to just the emblem portion */}
-            <div className="w-8 h-8 overflow-hidden flex-shrink-0" style={{ background: '#820F46' }}>
-              <img
-                src="/logo.jpeg"
-                alt="KLANÉ logo mark"
-                className="w-full h-full object-cover"
-                style={{ objectPosition: '50% 35%', transform: 'scale(1.3)' }}
-              />
-            </div>
+          <Link to="/" className="absolute left-1/2 -translate-x-1/2">
             <span className="font-heading font-normal text-2xl tracking-[0.3em] uppercase text-brand-black">KLANÉ</span>
           </Link>
 
