@@ -78,7 +78,11 @@ export function Header() {
 
           {/* Logo center */}
           <Link to="/" className="absolute left-1/2 -translate-x-1/2">
-            <span className="font-heading font-normal text-2xl tracking-[0.3em] uppercase text-brand-black">KLANÉ</span>
+            <img 
+              src="/logo-transparent.png" 
+              alt="KLANÉ" 
+              className="h-8 md:h-10 object-contain"
+            />
           </Link>
 
           {/* Right icons */}
