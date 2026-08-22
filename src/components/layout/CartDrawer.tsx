@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useCartStore } from '../../features/cart/cartStore'
 import { Button } from '../ui/Button'
 import { PriceDisplay } from '../ui/PriceDisplay'
@@ -8,6 +8,7 @@ import { formatPrice } from '../../lib/utils'
 
 export function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, subtotal } = useCartStore()
+  const navigate = useNavigate()
   const [discountCode, setDiscountCode] = useState('')
 
   if (!isOpen) return null
@@ -118,7 +119,17 @@ export function CartDrawer() {
             <Link to="/cart" onClick={closeCart}>
               <Button variant="secondary" size="md" fullWidth>View Cart</Button>
             </Link>
-            <Button variant="primary" size="md" fullWidth>Checkout</Button>
+            <Button 
+              variant="primary" 
+              size="md" 
+              fullWidth
+              onClick={() => {
+                closeCart()
+                navigate('/checkout')
+              }}
+            >
+              Checkout
+            </Button>
 
             <button onClick={closeCart}
               className="w-full text-center text-xs text-brand-gray hover:text-brand-black transition-colors font-heading uppercase tracking-widest pt-1">

@@ -3,35 +3,77 @@ import { Link } from 'react-router-dom'
 import { ProductCard } from '../../components/product/ProductCard'
 import { Button } from '../../components/ui/Button'
 import { mockProducts, mockReviews, mockCollections } from '../../lib/mockData'
+import { supabase } from '../../lib/supabase'
 
-function HeroSection() {
+export function useSiteContent() {
+  const [content, setContent] = useState({
+    hero_video: 'https://videos.pexels.com/video-files/3652874/3652874-uhd_2160_4096_30fps.mp4',
+    our_story_heading: 'KLANÉ',
+    our_story_subheading: 'We do not design for trends. We design for identity.',
+    our_story_text: 'There is a moment in every woman’s life when she chooses herself. KLANÉ exists for that moment.'
+  })
+
+  useEffect(() => {
+    supabase.from('site_content').select('*').then(({ data }) => {
+      if (data) {
+        const newContent = { ...content }
+        data.forEach(row => {
+          if (row.section_key in newContent && row.value) {
+            newContent[row.section_key as keyof typeof content] = row.value
+          }
+        })
+        setContent(newContent)
+      }
+    })
+  }, [])
+
+  return content
+}
+
+function HeroSection({ videoUrl }: { videoUrl: string }) {
   return (
-    <section className="relative h-[90vh] min-h-[600px] overflow-hidden bg-brand-charcoal">
-      <img
-        src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1800&q=80"
-        alt="theKlane hero"
+    <section className="relative h-[90vh] min-h-[600px] overflow-hidden bg-brand-neutral">
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        src={videoUrl}
         className="absolute inset-0 w-full h-full object-cover object-center opacity-80"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-brand-black/20 via-transparent to-brand-black/60" />
-      <div className="relative h-full flex flex-col items-center justify-end pb-20 px-6 text-center text-white">
-        <p className="font-heading text-2xs uppercase tracking-[0.3em] mb-4 opacity-80">New Collection 2024</p>
-        <h1 className="font-heading font-semibold text-5xl sm:text-7xl lg:text-8xl tracking-tight leading-none mb-6">
-          Wear Your
-          <br />
-          <em className="not-italic text-brand-sand">Confidence</em>
+      <div className="absolute inset-0 bg-brand-dark/30" />
+      <div className="relative h-full flex flex-col items-center justify-end pb-24 px-6 text-center text-white">
+        <p className="font-heading text-xs uppercase tracking-[0.25em] mb-6 drop-shadow-sm">every becoming begins with a choice</p>
+        <h1 className="font-heading font-normal text-6xl sm:text-7xl lg:text-8xl tracking-tight leading-none mb-6 drop-shadow-md">
+          KLANÉ
         </h1>
-        <p className="font-body text-base sm:text-lg text-white/70 max-w-md mb-10">
-          Curated pieces for the woman who stands out effortlessly.
+        <p className="font-body text-base sm:text-lg text-white/90 max-w-md mb-12 drop-shadow-sm font-light">
+          Intentional femininity for the woman becoming
         </p>
         <div className="flex gap-4 flex-wrap justify-center">
-          <Button variant="primary" size="lg" as="a" href="/collections/new-arrivals"
-            className="bg-white text-brand-black hover:bg-brand-cream">
-            Shop the Drop
+          <Button variant="primary" size="lg" as="a" href="/shop"
+            className="bg-brand-secondary text-white hover:bg-brand-secondary/90 border-none px-10">
+            Shop the Collection
           </Button>
-          <Button variant="ghost" size="lg" as="a" href="/shop"
-            className="text-white border border-white/40 hover:bg-white/10">
-            Explore All
-          </Button>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function OurStorySection({ heading, subheading, text }: { heading: string, subheading: string, text: string }) {
+  return (
+    <section className="bg-brand-base text-brand-dark py-24 lg:py-32 relative">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-px bg-brand-secondary/30" />
+      <div className="max-w-4xl mx-auto px-6 text-center">
+        <h2 className="font-heading font-normal text-4xl sm:text-5xl lg:text-6xl mb-10 tracking-wide">{heading}</h2>
+        <p className="font-heading text-xl sm:text-2xl text-brand-dark/90 italic mb-16 font-light">
+          {subheading}
+        </p>
+        <div className="max-w-2xl mx-auto">
+          <p className="font-body text-base sm:text-lg leading-relaxed text-brand-dark/70 whitespace-pre-line">
+            {text}
+          </p>
         </div>
       </div>
     </section>
@@ -177,32 +219,28 @@ function EmailSignup() {
   }
 
   return (
-    <section className="bg-brand-black text-white py-20 lg:py-28">
+    <section className="bg-brand-primary text-brand-dark py-24 lg:py-32">
       <div className="max-w-xl mx-auto px-6 text-center">
-        <p className="font-heading text-2xs uppercase tracking-[0.3em] text-white/40 mb-4">Join the Club</p>
-        <h2 className="font-heading font-semibold text-3xl sm:text-4xl uppercase tracking-wider mb-4">
-          Get 10% Off
+        <p className="font-heading text-xs uppercase tracking-[0.25em] text-brand-dark/60 mb-6">Join the journey</p>
+        <h2 className="font-heading font-normal text-3xl sm:text-4xl tracking-wider mb-6">
+          Be the first to step into klané
         </h2>
-        <p className="font-body text-base text-white/60 mb-10">
-          Join the theKlane club for early access, exclusive drops, and 10% off your first order.
-        </p>
         {submitted ? (
           <div className="py-8">
-            <p className="font-heading text-sm uppercase tracking-widest text-brand-sand">Welcome to the club ✓</p>
-            <p className="text-sm text-white/50 mt-2 font-body">Check your inbox for your discount code.</p>
+            <p className="font-heading text-sm uppercase tracking-widest text-brand-secondary">Welcome to the journey ✓</p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="flex gap-0">
+          <form onSubmit={handleSubmit} className="flex gap-0 mt-12 max-w-md mx-auto shadow-sm">
             <input
               type="email"
               required
               placeholder="Your email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 bg-white/10 border border-white/20 text-white placeholder:text-white/30 px-4 py-3.5 text-sm font-body focus:outline-none focus:border-brand-sand"
+              className="flex-1 bg-white border-none text-brand-dark placeholder:text-brand-dark/40 px-6 py-4 text-sm font-body focus:outline-none focus:ring-1 focus:ring-brand-secondary"
             />
             <button type="submit"
-              className="bg-brand-sand text-brand-black px-6 py-3.5 font-heading text-2xs uppercase tracking-widest hover:bg-brand-sand-dark transition-colors whitespace-nowrap">
+              className="bg-brand-secondary text-white px-8 py-4 font-body text-sm font-medium hover:bg-brand-secondary/90 transition-colors whitespace-nowrap">
               Subscribe
             </button>
           </form>
@@ -213,12 +251,14 @@ function EmailSignup() {
 }
 
 export default function Home() {
+  const content = useSiteContent()
   const bestSellers = mockProducts.filter(p => p.is_featured).slice(0, 4)
   const newArrivals = mockProducts.filter(p => p.is_new_arrival).slice(0, 4)
 
   return (
     <main>
-      <HeroSection />
+      <HeroSection videoUrl={content.hero_video} />
+      <OurStorySection heading={content.our_story_heading} subheading={content.our_story_subheading} text={content.our_story_text} />
       <ProductRail title="Best Sellers" products={bestSellers} link="/collections/best-sellers" />
       <FeaturedCollectionBanner />
       <ProductRail title="New Arrivals" products={newArrivals} link="/collections/new-arrivals" />

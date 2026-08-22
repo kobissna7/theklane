@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom'
 import { AuthProvider } from './features/auth/AuthContext'
 import { AnnouncementBar } from './components/layout/AnnouncementBar'
 import { Header } from './components/layout/Header'
@@ -7,16 +7,26 @@ import { Footer } from './components/layout/Footer'
 import { CartDrawer } from './components/layout/CartDrawer'
 import { ToastContainer as Toast } from './components/ui/Toast'
 
-// Pages
+// Storefront Pages
 import Home from './pages/storefront/Home'
 import Shop from './pages/storefront/Shop'
+import ProductDetail from './pages/storefront/ProductDetail'
+import Checkout from './pages/storefront/Checkout'
 
-function Layout({ children }: { children: React.ReactNode }) {
+// Admin Pages
+import AdminLayout from './pages/admin/AdminLayout'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminContent from './pages/admin/AdminContent'
+import AdminProducts from './pages/admin/AdminProducts'
+
+function StorefrontLayout() {
   return (
     <div className="flex flex-col min-h-screen">
       <AnnouncementBar />
       <Header />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1">
+        <Outlet />
+      </main>
       <Footer />
       <CartDrawer />
       <Toast />
@@ -28,13 +38,22 @@ export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Layout>
-          <Routes>
+        <Routes>
+          {/* Storefront */}
+          <Route element={<StorefrontLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop />} />
-            {/* Additional routes will go here */}
-          </Routes>
-        </Layout>
+            <Route path="/product/:slug" element={<ProductDetail />} />
+            <Route path="/checkout" element={<Checkout />} />
+          </Route>
+
+          {/* Admin Dashboard */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="content" element={<AdminContent />} />
+            <Route path="products" element={<AdminProducts />} />
+          </Route>
+        </Routes>
       </BrowserRouter>
     </AuthProvider>
   )

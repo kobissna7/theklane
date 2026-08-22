@@ -6,20 +6,25 @@ export default {
     extend: {
       colors: {
         brand: {
-          cream: '#F9F7F4',
-          'cream-dark': '#F0EDE8',
-          black: '#121210',
-          charcoal: '#2A2A28',
-          gray: '#6B6B68',
-          'gray-light': '#C8C6C2',
-          sand: '#C8A882',
-          'sand-dark': '#A8845E',
-          'sand-light': '#E8D4BC',
+          primary: '#DEB2B4', // Soft blush
+          secondary: '#820F46', // Deep berry
+          dark: '#090103', // Black
+          neutral: '#F3ECDC', // Warm Cream
+          accent: '#DE99AB', // Dusty Pink
+          base: '#FFFFFF', // White
+          // Keep these for UI elements that might still rely on them, mapping to new colors
+          cream: '#F3ECDC',
+          'cream-dark': '#EFE5CF',
+          black: '#090103',
+          charcoal: '#1A1113',
+          gray: '#7A6D70',
+          'gray-light': '#D6C8CA',
+          sand: '#DEB2B4',
         },
       },
       fontFamily: {
-        heading: ['Archivo', 'sans-serif'],
-        body: ['Assistant', 'sans-serif'],
+        heading: ['"Bodoni Moda"', 'serif'],
+        body: ['Inter', 'sans-serif'],
       },
       fontSize: {
         '2xs': ['0.625rem', { lineHeight: '1rem', letterSpacing: '0.12em' }],
