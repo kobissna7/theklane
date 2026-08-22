@@ -10,6 +10,7 @@ import { ToastContainer as Toast } from './components/ui/Toast'
 // Storefront Pages
 import Home from './pages/storefront/Home'
 import Shop from './pages/storefront/Shop'
+import CategoryPage from './pages/storefront/CategoryPage'
 import ProductDetail from './pages/storefront/ProductDetail'
 import Checkout from './pages/storefront/Checkout'
 
@@ -43,6 +44,8 @@ export default function App() {
           <Route element={<StorefrontLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop />} />
+            <Route path="/category/:slug" element={<CategoryPage />} />
+            <Route path="/collections/:slug" element={<CategoryPage />} />
             <Route path="/product/:slug" element={<ProductDetail />} />
             <Route path="/checkout" element={<Checkout />} />
           </Route>
