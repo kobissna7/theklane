@@ -23,7 +23,7 @@ export default {
         },
       },
       fontFamily: {
-        heading: ['"Bodoni Moda"', 'serif'],
+        heading: ['"Cormorant Garamond"', 'serif'],
         body: ['Inter', 'sans-serif'],
       },
       fontSize: {
