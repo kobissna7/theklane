@@ -78,7 +78,7 @@ export function Header() {
 
           {/* Logo center */}
           <Link to="/" className="absolute left-1/2 -translate-x-1/2">
-            <span className="font-heading font-semibold text-lg tracking-[0.25em] uppercase text-brand-black">ƬӇЄ ƘԼΛƝЄ</span>
+            <span className="font-heading font-normal text-2xl tracking-[0.3em] uppercase text-brand-black">KLANÉ</span>
           </Link>
 
           {/* Right icons */}

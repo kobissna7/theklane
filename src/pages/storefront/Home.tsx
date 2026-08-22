@@ -38,10 +38,13 @@ function HeroSection({ videoUrl }: { videoUrl: string }) {
         loop
         muted
         playsInline
-        src={videoUrl}
-        className="absolute inset-0 w-full h-full object-cover object-center opacity-80"
-      />
-      <div className="absolute inset-0 bg-brand-dark/30" />
+        poster="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1800&q=80"
+        className="absolute inset-0 w-full h-full object-cover object-center"
+      >
+        <source src={videoUrl} type="video/mp4" />
+        {/* Fallback: poster image is shown if video can't load */}
+      </video>
+      <div className="absolute inset-0 bg-brand-dark/40" />
       <div className="relative h-full flex flex-col items-center justify-end pb-24 px-6 text-center text-white">
         <p className="font-heading text-xs uppercase tracking-[0.25em] mb-6 drop-shadow-sm">every becoming begins with a choice</p>
         <h1 className="font-heading font-normal text-6xl sm:text-7xl lg:text-8xl tracking-tight leading-none mb-6 drop-shadow-md">
