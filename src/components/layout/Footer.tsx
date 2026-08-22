@@ -13,7 +13,7 @@ export function Footer() {
                 <img 
                   src="/logo-transparent.png" 
                   alt="KLANÉ" 
-                  className="h-8 md:h-10 object-contain brightness-0 invert"
+                  className="h-16 md:h-20 object-contain brightness-0 invert origin-left scale-125"
                 />
             </Link>
             <p className="mt-4 text-sm text-white/60 font-body max-w-xs leading-relaxed">

@@ -81,7 +81,7 @@ export function Header() {
             <img 
               src="/logo-transparent.png" 
               alt="KLANÉ" 
-              className="h-8 md:h-10 object-contain"
+              className="h-20 md:h-24 object-contain scale-125"
             />
           </Link>
 
