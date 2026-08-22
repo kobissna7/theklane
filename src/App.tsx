@@ -13,6 +13,7 @@ import Shop from './pages/storefront/Shop'
 import CategoryPage from './pages/storefront/CategoryPage'
 import ProductDetail from './pages/storefront/ProductDetail'
 import Checkout from './pages/storefront/Checkout'
+import Login from './pages/storefront/Login'
 
 // Admin Pages
 import AdminLayout from './pages/admin/AdminLayout'
@@ -48,6 +49,7 @@ export default function App() {
             <Route path="/collections/:slug" element={<CategoryPage />} />
             <Route path="/product/:slug" element={<ProductDetail />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/account/login" element={<Login />} />
           </Route>
 
           {/* Admin Dashboard */}

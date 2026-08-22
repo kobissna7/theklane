@@ -1,14 +1,40 @@
 import React from 'react'
-import { Outlet, Link, useLocation } from 'react-router-dom'
+import { Outlet, Link, useLocation, Navigate } from 'react-router-dom'
+import { useAuth } from '../../features/auth/AuthContext'
 
 export default function AdminLayout() {
   const location = useLocation()
+  const { user, isAdmin, loading, signOut } = useAuth()
+
   
   const navItems = [
     { name: 'Dashboard', path: '/admin' },
     { name: 'Site Content', path: '/admin/content' },
     { name: 'Products', path: '/admin/products' },
   ]
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center font-heading">Loading...</div>
+  }
+
+  if (!user) {
+    return <Navigate to="/account/login" replace />
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-brand-base font-body px-4 text-center">
+        <h1 className="font-heading text-3xl mb-4 text-brand-dark">Access Denied</h1>
+        <p className="text-brand-dark/70 mb-8 max-w-md">
+          You do not have administrative privileges. Only admins can access this portal.
+        </p>
+        <Link to="/" className="text-brand-secondary hover:underline">Return to Storefront</Link>
+        <button onClick={signOut} className="mt-8 text-xs text-brand-dark/40 uppercase tracking-widest hover:text-brand-dark">
+          Log Out
+        </button>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-brand-neutral flex flex-col md:flex-row font-body">
@@ -36,6 +62,15 @@ export default function AdminLayout() {
             ))}
           </ul>
         </nav>
+        
+        <div className="p-6 mt-auto">
+          <button 
+            onClick={signOut}
+            className="text-xs text-brand-base/50 hover:text-white uppercase tracking-widest transition-colors"
+          >
+            Log Out
+          </button>
+        </div>
       </aside>
 
       {/* Main Content */}
