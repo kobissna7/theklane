@@ -30,32 +30,30 @@ export default function Login() {
           email,
           password,
           options: {
-            data: {
-              full_name: fullName,
-            }
+            data: { full_name: fullName },
+            emailRedirectTo: `${window.location.origin}/welcome`
           }
         })
         if (error) throw error
         
-        // Profiles are usually created via a trigger, but we'll try to insert here if needed, 
-        // or just let them know to check email.
         if (data.user && data.user.identities && data.user.identities.length === 0) {
            addToast('error', 'This email is already registered. Try logging in.')
         } else {
-           addToast('success', 'Sign up successful! You are now logged in.')
-           // For a real app with email confirmation, you'd tell them to check their email.
-           // We'll assume auto-login is on for this demo.
-           navigate('/admin')
+           // If email confirmation is disabled, go to welcome directly
+           if (data.session) {
+             navigate('/welcome')
+           } else {
+             // Email confirmation required — show a message
+             addToast('success', 'Check your email to confirm your account!')
+             navigate('/account/login')
+           }
         }
 
       } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        })
+        const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
         addToast('success', 'Welcome back!')
-        navigate('/admin')
+        navigate('/account')
       }
     } catch (err: any) {
       addToast('error', err.message || 'Authentication failed.')

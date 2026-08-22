@@ -14,6 +14,8 @@ import CategoryPage from './pages/storefront/CategoryPage'
 import ProductDetail from './pages/storefront/ProductDetail'
 import Checkout from './pages/storefront/Checkout'
 import Login from './pages/storefront/Login'
+import Account from './pages/storefront/Account'
+import Welcome from './pages/storefront/Welcome'
 
 // Admin Pages
 import AdminLayout from './pages/admin/AdminLayout'
@@ -50,6 +52,8 @@ export default function App() {
             <Route path="/product/:slug" element={<ProductDetail />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/account/login" element={<Login />} />
+            <Route path="/account" element={<Account />} />
+            <Route path="/welcome" element={<Welcome />} />
           </Route>
 
           {/* Admin Dashboard */}
