@@ -1,8 +1,16 @@
 {
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!.*\\.).*)",
       "destination": "/index.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.theklane.co" }],
+      "destination": "https://theklane.co/$1",
+      "permanent": true
     }
   ]
 }
