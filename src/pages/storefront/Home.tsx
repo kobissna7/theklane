@@ -7,7 +7,7 @@ import { supabase } from '../../lib/supabase'
 
 export function useSiteContent() {
   const [content, setContent] = useState({
-    hero_video: 'https://videos.pexels.com/video-files/3652874/3652874-uhd_2160_4096_30fps.mp4',
+    hero_video: '/hero-video.mp4',
     our_story_heading: 'KLANÉ',
     our_story_subheading: 'We do not design for trends. We design for identity.',
     our_story_text: 'There is a moment in every woman’s life when she chooses herself. KLANÉ exists for that moment.'
