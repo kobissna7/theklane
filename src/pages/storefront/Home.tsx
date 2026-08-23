@@ -7,19 +7,33 @@ import { supabase } from '../../lib/supabase'
 
 export function useSiteContent() {
   const [content, setContent] = useState({
-    hero_video: '/hero-video.mp4',
-    our_story_heading: 'KLANÉ',
-    our_story_subheading: 'We do not design for trends. We design for identity.',
-    our_story_text: 'There is a moment in every woman’s life when she chooses herself. KLANÉ exists for that moment.'
+    hero_video_url: '/hero-video.mp4',
+    our_story_heading: 'Crafted for the Modern Muse.',
+    our_story_subheading: 'UNCOMPROMISING QUALITY',
+    our_story_body: 'KLANÉ was born from a desire to redefine contemporary elegance. Every piece in our collection is a testament to meticulous craftsmanship and timeless design.',
+    featured_banner_url: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=1600&q=80',
+    shop_all_banner_url: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1600&q=80',
+    instagram_images: [
+      'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&q=80',
+      'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&q=80',
+      'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&q=80',
+      'https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=400&q=80',
+      'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&q=80',
+      'https://images.unsplash.com/photo-1519407066695-f45c0cdf1da8?w=400&q=80',
+    ]
   })
 
   useEffect(() => {
-    supabase.from('site_content').select('*').then(({ data }) => {
+    supabase.from('site_settings').select('*').then(({ data }) => {
       if (data) {
         const newContent = { ...content }
         data.forEach(row => {
-          if (row.section_key in newContent && row.value) {
-            newContent[row.section_key as keyof typeof content] = row.value
+          if (row.key in newContent) {
+            if (row.key === 'instagram_images' && row.message) {
+              try { (newContent as any).instagram_images = JSON.parse(row.message) } catch(e){}
+            } else {
+              (newContent as any)[row.key] = row.link_url || row.message || (newContent as any)[row.key]
+            }
           }
         })
         setContent(newContent)
@@ -101,20 +115,20 @@ function ProductRail({ title, products, link }: { title: string; products: typeo
   )
 }
 
-function FeaturedCollectionBanner() {
+function FeaturedCollectionBanner({ bannerUrl }: { bannerUrl: string }) {
   const collection = mockCollections[1]
   return (
     <section className="relative h-[60vh] min-h-[400px] overflow-hidden group">
       <img
-        src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=1600&q=80"
-        alt={collection.name}
+        src={bannerUrl || "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=1600&q=80"}
+        alt={collection?.name || 'Featured'}
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-brand group-hover:scale-105"
       />
       <div className="absolute inset-0 bg-brand-black/40" />
       <div className="relative h-full flex flex-col items-center justify-center text-center text-white px-6">
         <p className="font-heading text-2xs uppercase tracking-[0.3em] mb-3 opacity-70">Curated Collection</p>
-        <h2 className="font-heading font-semibold text-4xl sm:text-6xl uppercase tracking-wider mb-6">{collection.name}</h2>
-        <Button variant="secondary" size="lg" as="a" href={`/collections/${collection.slug}`}
+        <h2 className="font-heading font-semibold text-4xl sm:text-6xl uppercase tracking-wider mb-6">{collection?.name || 'Featured'}</h2>
+        <Button variant="secondary" size="lg" as="a" href={collection ? `/collections/${collection.slug}` : '/shop'}
           className="bg-white text-brand-black hover:bg-brand-cream">
           Explore Collection
         </Button>
@@ -159,11 +173,11 @@ function TestimonialsSection() {
   )
 }
 
-function ShopAllBanner() {
+function ShopAllBanner({ bannerUrl }: { bannerUrl: string }) {
   return (
     <section className="relative h-[50vh] min-h-[380px] overflow-hidden group">
       <img
-        src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1600&q=80"
+        src={bannerUrl || "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1600&q=80"}
         alt="Shop All theKlane"
         className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 ease-brand group-hover:scale-105"
       />
@@ -179,8 +193,8 @@ function ShopAllBanner() {
   )
 }
 
-function InstagramTeaser() {
-  const images = [
+function InstagramTeaser({ images }: { images: string[] }) {
+  const displayImages = images.length > 0 ? images : [
     'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&q=80',
     'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&q=80',
     'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&q=80',
@@ -199,7 +213,7 @@ function InstagramTeaser() {
           </a>
         </div>
         <div className="grid grid-cols-3 md:grid-cols-6 gap-1 sm:gap-2">
-          {images.map((src, i) => (
+          {displayImages.map((src, i) => (
             <a key={i} href="https://instagram.com/theklane" target="_blank" rel="noopener noreferrer"
               className="aspect-square overflow-hidden block group">
               <img src={src} alt={`Instagram ${i + 1}`}
@@ -255,19 +269,30 @@ function EmailSignup() {
 
 export default function Home() {
   const content = useSiteContent()
-  const bestSellers = mockProducts.filter(p => p.is_featured).slice(0, 4)
-  const newArrivals = mockProducts.filter(p => p.is_new_arrival).slice(0, 4)
+  const [bestSellers, setBestSellers] = useState<any[]>([])
+  const [newArrivals, setNewArrivals] = useState<any[]>([])
+
+  useEffect(() => {
+    async function fetchProducts() {
+      const { data } = await supabase.from('products').select('*, product_images(id, url, is_primary)').eq('is_active', true)
+      if (data) {
+        setBestSellers(data.filter(p => p.is_featured).slice(0, 4))
+        setNewArrivals(data.filter(p => p.is_new_arrival).slice(0, 4))
+      }
+    }
+    fetchProducts()
+  }, [])
 
   return (
     <main>
-      <HeroSection videoUrl={content.hero_video} />
-      <OurStorySection heading={content.our_story_heading} subheading={content.our_story_subheading} text={content.our_story_text} />
-      <ProductRail title="Best Sellers" products={bestSellers} link="/collections/best-sellers" />
-      <FeaturedCollectionBanner />
-      <ProductRail title="New Arrivals" products={newArrivals} link="/collections/new-arrivals" />
+      <HeroSection videoUrl={content.hero_video_url} />
+      <OurStorySection heading={content.our_story_heading} subheading={content.our_story_subheading} text={content.our_story_body} />
+      {bestSellers.length > 0 && <ProductRail title="Best Sellers" products={bestSellers as any} link="/collections/best-sellers" />}
+      <FeaturedCollectionBanner bannerUrl={content.featured_banner_url} />
+      {newArrivals.length > 0 && <ProductRail title="New Arrivals" products={newArrivals as any} link="/collections/new-arrivals" />}
       <TestimonialsSection />
-      <ShopAllBanner />
-      <InstagramTeaser />
+      <ShopAllBanner bannerUrl={content.shop_all_banner_url} />
+      <InstagramTeaser images={content.instagram_images} />
       <EmailSignup />
     </main>
   )

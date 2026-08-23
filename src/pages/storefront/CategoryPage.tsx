@@ -1,29 +1,53 @@
-import React, { useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { ProductCard } from '../../components/product/ProductCard'
-import { mockProducts, mockCategories, mockCollections } from '../../lib/mockData'
+import { supabase } from '../../lib/supabase'
+import type { Product, Category, Collection } from '../../lib/types'
 
 export default function CategoryPage() {
   const { slug } = useParams<{ slug: string }>()
 
-  // Check if it's a category or collection
-  const category = mockCategories.find(c => c.slug === slug)
-  const collection = mockCollections.find(c => c.slug === slug)
+  const [category, setCategory] = useState<Category | null>(null)
+  const [collection, setCollection] = useState<Collection | null>(null)
+  const [products, setProducts] = useState<Product[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchData() {
+      if (!slug) return
+      setLoading(true)
+
+      // Check category
+      const { data: catData } = await supabase.from('categories').select('*').eq('slug', slug).single()
+      if (catData) {
+        setCategory(catData)
+        const { data: prods } = await supabase.from('products').select('*, product_images(url, is_primary), product_variants(size, color, stock_quantity, price_override)').eq('category_id', catData.id).eq('is_active', true)
+        setProducts(prods || [])
+      } else {
+        // Check collection
+        const { data: colData } = await supabase.from('collections').select('*').eq('slug', slug).single()
+        if (colData) {
+          setCollection(colData)
+          // Since we don't have a direct many-to-many collection mapping right now, we fallback to hardcoded slugs for demo,
+          // or fetch all active products for normal collections.
+          let query = supabase.from('products').select('*, product_images(url, is_primary), product_variants(size, color, stock_quantity, price_override)').eq('is_active', true)
+          if (slug === 'best-sellers') query = query.eq('is_featured', true)
+          if (slug === 'new-arrivals') query = query.eq('is_new_arrival', true)
+          
+          const { data: prods } = await query
+          setProducts(prods || [])
+        }
+      }
+      setLoading(false)
+    }
+    fetchData()
+  }, [slug])
 
   const title = category?.name || collection?.name || slug || 'Collection'
 
-  const products = useMemo(() => {
-    if (category) {
-      return mockProducts.filter(p => p.is_active && p.category_id === category.id)
-    }
-    if (collection) {
-      // For now, show featured products in collections
-      if (collection.slug === 'best-sellers') return mockProducts.filter(p => p.is_featured)
-      if (collection.slug === 'new-arrivals') return mockProducts.filter(p => p.is_new_arrival)
-      return mockProducts.filter(p => p.is_active)
-    }
-    return mockProducts.filter(p => p.is_active)
-  }, [slug, category, collection])
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center font-heading text-xs uppercase tracking-widest text-brand-gray">Loading...</div>
+  }
 
   return (
     <div className="min-h-screen bg-brand-base">

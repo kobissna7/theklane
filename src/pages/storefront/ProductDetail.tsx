@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { mockProducts } from '../../lib/mockData'
+import { supabase } from '../../lib/supabase'
+import type { Product } from '../../lib/types'
 import { formatPrice } from '../../lib/utils'
 import { useCartStore } from '../../features/cart/cartStore'
 import { useToastStore } from '../../features/toast/toastStore'
@@ -14,7 +15,9 @@ export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
   
-  const product = mockProducts.find(p => p.slug === slug)
+  const [product, setProduct] = useState<Product | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
   
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [selectedVariantId, setSelectedVariantId] = useState<string>('')
@@ -25,19 +28,31 @@ export default function ProductDetail() {
   const addToast = useToastStore(state => state.addToast)
 
   useEffect(() => {
-    if (product) {
-      // Auto-select first image
-      const primary = product.product_images?.find(i => i.is_primary)
-      setSelectedImage(primary?.url || product.product_images?.[0]?.url || null)
-      
-      // Auto-select first variant
-      if (product.product_variants && product.product_variants.length > 0) {
-        setSelectedVariantId(product.product_variants[0].id)
+    async function fetchProduct() {
+      if (!slug) return
+      setLoading(true)
+      const { data } = await supabase.from('products').select('*, product_images(id, url, thumb_url, is_primary), product_variants(*)').eq('slug', slug).single()
+      if (data) {
+        setProduct(data)
+        const primary = data.product_images?.find((i: any) => i.is_primary)
+        setSelectedImage(primary?.url || data.product_images?.[0]?.url || null)
+        if (data.product_variants && data.product_variants.length > 0) {
+          setSelectedVariantId(data.product_variants[0].id)
+        }
+        
+        // Fetch related products
+        const { data: related } = await supabase.from('products').select('*, product_images(id, url, is_primary)').eq('category_id', data.category_id).neq('id', data.id).limit(4)
+        if (related) setRelatedProducts(related)
       }
+      setLoading(false)
     }
-    // Scroll to top on load
+    fetchProduct()
     window.scrollTo(0, 0)
-  }, [product])
+  }, [slug])
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center font-heading text-xs uppercase tracking-widest text-brand-gray">Loading...</div>
+  }
 
   if (!product) {
     return (
@@ -69,11 +84,6 @@ export default function ProductDetail() {
     addItem(product, selectedVariant, quantity)
     setIsOpen(true) // Open cart drawer
   }
-
-  // Find some related products (just picking a few from same category for demo)
-  const relatedProducts = mockProducts
-    .filter(p => p.category_id === product.category_id && p.id !== product.id)
-    .slice(0, 4)
 
   return (
     <div className="bg-brand-cream min-h-screen pt-24 pb-32 animate-fade-in">

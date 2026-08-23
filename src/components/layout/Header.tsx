@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { useCartStore } from '../../features/cart/cartStore'
 import { useAuth } from '../../features/auth/AuthContext'
-import { mockCategories } from '../../lib/mockData'
+import { supabase } from '../../lib/supabase'
+import type { Category, Collection } from '../../lib/types'
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [shopOpen, setShopOpen] = useState(false)
+  const [topCategories, setTopCategories] = useState<Category[]>([])
+  const [collections, setCollections] = useState<Collection[]>([])
   const { itemCount } = useCartStore()
   const { user, isAdmin } = useAuth()
   const count = itemCount()
@@ -18,7 +21,17 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const topCategories = mockCategories.filter(c => !c.parent_id)
+  useEffect(() => {
+    async function fetchData() {
+      const [{ data: cats }, { data: cols }] = await Promise.all([
+        supabase.from('categories').select('*').eq('is_active', true).is('parent_id', null).order('sort_order'),
+        supabase.from('collections').select('*').eq('is_active', true).order('sort_order')
+      ])
+      setTopCategories(cats || [])
+      setCollections(cols || [])
+    }
+    fetchData()
+  }, [])
 
   return (
     <header className={`sticky top-0 z-40 transition-all duration-300 ${

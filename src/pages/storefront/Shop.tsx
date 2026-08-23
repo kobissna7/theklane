@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { ProductCard } from '../../components/product/ProductCard'
-import { mockProducts, mockCategories, SIZES, COLORS } from '../../lib/mockData'
-import type { SortOption, FilterState } from '../../lib/types'
+import { supabase } from '../../lib/supabase'
+import { SIZES, COLORS } from '../../lib/mockData'
+import type { SortOption, FilterState, Product, Category } from '../../lib/types'
 
 const SORT_OPTIONS: { label: string; value: SortOption }[] = [
   { label: 'Newest', value: 'newest' },
@@ -14,9 +15,25 @@ export default function Shop() {
   const [sort, setSort] = useState<SortOption>('newest')
   const [filters, setFilters] = useState<FilterState>({ categories: [], sizes: [], colors: [], priceMin: null, priceMax: null })
   const [filtersOpen, setFiltersOpen] = useState(false)
+  const [allProducts, setAllProducts] = useState<Product[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchData() {
+      const [{ data: prods }, { data: cats }] = await Promise.all([
+        supabase.from('products').select('*, product_images(url, is_primary), product_variants(size, color, stock_quantity, price_override)').eq('is_active', true),
+        supabase.from('categories').select('*').eq('is_active', true).is('parent_id', null)
+      ])
+      setAllProducts(prods || [])
+      setCategories(cats || [])
+      setLoading(false)
+    }
+    fetchData()
+  }, [])
 
   const products = useMemo(() => {
-    let p = mockProducts.filter(prod => prod.is_active)
+    let p = [...allProducts]
 
     if (filters.categories.length > 0) p = p.filter(prod => prod.category_id && filters.categories.includes(prod.category_id))
     if (filters.sizes.length > 0) p = p.filter(prod => prod.product_variants?.some(v => v.size && filters.sizes.includes(v.size)))
@@ -25,13 +42,13 @@ export default function Shop() {
     if (filters.priceMax !== null) p = p.filter(prod => prod.base_price <= filters.priceMax!)
 
     switch (sort) {
-      case 'newest': return [...p].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-      case 'price-asc': return [...p].sort((a, b) => a.base_price - b.base_price)
-      case 'price-desc': return [...p].sort((a, b) => b.base_price - a.base_price)
-      case 'best-selling': return [...p].sort((a, b) => (b.is_featured ? 1 : 0) - (a.is_featured ? 1 : 0))
+      case 'newest': return p.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      case 'price-asc': return p.sort((a, b) => a.base_price - b.base_price)
+      case 'price-desc': return p.sort((a, b) => b.base_price - a.base_price)
+      case 'best-selling': return p.sort((a, b) => (b.is_featured ? 1 : 0) - (a.is_featured ? 1 : 0))
       default: return p
     }
-  }, [sort, filters])
+  }, [sort, filters, allProducts])
 
   const toggleFilter = (key: keyof FilterState, value: string) => {
     setFilters(f => {
@@ -39,8 +56,6 @@ export default function Shop() {
       return { ...f, [key]: arr.includes(value) ? arr.filter(v => v !== value) : [...arr, value] }
     })
   }
-
-  const topCategories = mockCategories.filter(c => !c.parent_id && c.is_active)
 
   return (
     <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -53,7 +68,7 @@ export default function Shop() {
       <div className="flex gap-10">
         {/* Sidebar Filters — Desktop */}
         <aside className="hidden lg:block w-56 flex-shrink-0">
-          <FilterSidebar filters={filters} setFilters={setFilters} toggleFilter={toggleFilter} categories={topCategories} />
+          <FilterSidebar filters={filters} setFilters={setFilters} toggleFilter={toggleFilter} categories={categories} />
         </aside>
 
         {/* Main content */}
