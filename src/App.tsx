@@ -22,7 +22,9 @@ import AdminLayout from './pages/admin/AdminLayout'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminContent from './pages/admin/AdminContent'
 import AdminProducts from './pages/admin/AdminProducts'
-
+import AdminCategories from './pages/admin/AdminCategories'
+import AdminCollections from './pages/admin/AdminCollections'
+import AdminDrops from './pages/admin/AdminDrops'
 function StorefrontLayout() {
   return (
     <div className="flex flex-col min-h-screen">
@@ -61,6 +63,9 @@ export default function App() {
             <Route index element={<AdminDashboard />} />
             <Route path="content" element={<AdminContent />} />
             <Route path="products" element={<AdminProducts />} />
+            <Route path="categories" element={<AdminCategories />} />
+            <Route path="collections" element={<AdminCollections />} />
+            <Route path="drops" element={<AdminDrops />} />
           </Route>
         </Routes>
       </BrowserRouter>

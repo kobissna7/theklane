@@ -11,6 +11,9 @@ export default function AdminLayout() {
     { name: 'Dashboard', path: '/admin' },
     { name: 'Site Content', path: '/admin/content' },
     { name: 'Products', path: '/admin/products' },
+    { name: 'Categories', path: '/admin/categories' },
+    { name: 'Collections', path: '/admin/collections' },
+    { name: 'Drops', path: '/admin/drops' },
   ]
 
   if (loading) {
