@@ -5,6 +5,7 @@ import { useToastStore } from '../../features/toast/toastStore'
 import { formatPrice } from '../../lib/utils'
 import { Button } from '../../components/ui/Button'
 import { supabase } from '../../lib/supabase'
+import { useAuth } from '../../features/auth/AuthContext'
 
 export default function Checkout() {
   const navigate = useNavigate()
@@ -42,20 +43,60 @@ export default function Checkout() {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
+  const { user } = useAuth()
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsProcessing(true)
     
-    // Simulate network delay for checkout
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    // In a real app, we would create a Stripe PaymentIntent here, 
-    // confirm it, and insert an Order row in Supabase.
-    // For now, we simulate success.
-    
-    addToast('success', 'Order placed successfully! Thank you for shopping with us.')
-    clearCart()
-    navigate('/')
+    try {
+      const tax = total * 0.08
+      const shipping = total > 200 ? 0 : 15
+      const finalTotal = total + tax + shipping
+
+      // 1. Create order
+      const { data: order, error: orderError } = await supabase
+        .from('orders')
+        .insert({
+          user_id: user?.id || null,
+          email: formData.email,
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          address: formData.address,
+          city: formData.city,
+          state: formData.state,
+          zip: formData.zip,
+          total_amount: finalTotal,
+          status: 'pending'
+        })
+        .select()
+        .single()
+
+      if (orderError) throw orderError
+
+      // 2. Create order items
+      const orderItems = items.map(item => ({
+        order_id: order.id,
+        product_id: item.product.id,
+        variant_id: item.variantId,
+        quantity: item.quantity,
+        price_at_time: item.variant.price_override ?? (item.product.is_on_sale && item.product.sale_price ? item.product.sale_price : item.product.base_price)
+      }))
+
+      const { error: itemsError } = await supabase
+        .from('order_items')
+        .insert(orderItems)
+
+      if (itemsError) throw itemsError
+
+      addToast('success', 'Order placed successfully! Thank you for shopping with us.')
+      clearCart()
+      navigate('/')
+    } catch (error: any) {
+      addToast('error', error.message || 'Failed to place order')
+    } finally {
+      setIsProcessing(false)
+    }
   }
 
   const tax = total * 0.08

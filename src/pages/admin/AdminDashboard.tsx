@@ -5,38 +5,50 @@ import { supabase } from '../../lib/supabase'
 interface Stats {
   activeProducts: number
   totalOrders: number
+  totalRevenue: number
   waitlistEntries: number
+  newsletterSubscribers: number
 }
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState<Stats>({ activeProducts: 0, totalOrders: 0, waitlistEntries: 0 })
+  const [stats, setStats] = useState<Stats>({ activeProducts: 0, totalOrders: 0, totalRevenue: 0, waitlistEntries: 0, newsletterSubscribers: 0 })
 
   useEffect(() => {
     async function fetchStats() {
-      const [{ count: products }, { count: entries }] = await Promise.all([
+      const [{ count: products }, { count: entries }, { count: orders }, { count: subscribers }, { data: revenueData }] = await Promise.all([
         supabase.from('products').select('id', { count: 'exact', head: true }).eq('is_active', true),
         supabase.from('waitlist_entries').select('id', { count: 'exact', head: true }),
+        supabase.from('orders').select('id', { count: 'exact', head: true }),
+        supabase.from('newsletter_subscribers').select('id', { count: 'exact', head: true }),
+        supabase.from('orders').select('total_amount'),
       ])
+      const totalRevenue = (revenueData || []).reduce((sum: number, o: any) => sum + Number(o.total_amount), 0)
       setStats({
         activeProducts: products || 0,
-        totalOrders: 0,
+        totalOrders: orders || 0,
+        totalRevenue,
         waitlistEntries: entries || 0,
+        newsletterSubscribers: subscribers || 0,
       })
     }
     fetchStats()
   }, [])
 
   const statCards = [
-    { label: 'Total Sales', value: '$0.00', sub: 'This month', href: null },
+    { label: 'Total Revenue', value: `$${stats.totalRevenue.toFixed(2)}`, sub: 'All time', href: '/admin/orders' },
+    { label: 'Total Orders', value: String(stats.totalOrders), sub: 'All time', href: '/admin/orders' },
     { label: 'Active Products', value: String(stats.activeProducts), sub: 'Published to store', href: '/admin/products' },
     { label: 'Waitlist Entries', value: String(stats.waitlistEntries), sub: 'Awaiting restock', href: '/admin/waitlist' },
+    { label: 'Newsletter', value: String(stats.newsletterSubscribers), sub: 'Subscribers', href: '/admin/newsletter' },
   ]
 
   const quickLinks = [
     { label: 'Add a Product', href: '/admin/products', desc: 'Upload new items to the store' },
+    { label: 'View Orders', href: '/admin/orders', desc: 'Track and manage customer orders' },
     { label: 'Manage Drops', href: '/admin/drops', desc: 'Schedule limited releases' },
     { label: 'Edit Homepage', href: '/admin/content', desc: 'Update copy, video, and sections' },
     { label: 'View Waitlist', href: '/admin/waitlist', desc: 'See who wants what' },
+    { label: 'Newsletter', href: '/admin/newsletter', desc: 'Manage email subscribers' },
   ]
 
   return (
@@ -59,7 +71,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         {statCards.map(({ label, value, sub, href }) => {
           const card = (
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow group">

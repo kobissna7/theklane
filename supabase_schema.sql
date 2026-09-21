@@ -171,3 +171,55 @@ ON CONFLICT (key) DO NOTHING;
 ALTER TABLE public.collections ADD COLUMN IF NOT EXISTS is_drop BOOLEAN DEFAULT false;
 ALTER TABLE public.collections ADD COLUMN IF NOT EXISTS drop_date TIMESTAMPTZ;
 
+
+-- 12. NEWSLETTER SUBSCRIBERS
+CREATE TABLE IF NOT EXISTS public.newsletter_subscribers (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email TEXT UNIQUE NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.newsletter_subscribers ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone can subscribe" ON newsletter_subscribers FOR INSERT WITH CHECK (true);
+CREATE POLICY "Admins can view subscribers" ON newsletter_subscribers FOR SELECT USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+CREATE POLICY "Admins can delete subscribers" ON newsletter_subscribers FOR DELETE USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+
+-- 13. ORDERS
+CREATE TABLE IF NOT EXISTS public.orders (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES auth.users(id), -- optional, for logged in users
+  email TEXT NOT NULL,
+  first_name TEXT NOT NULL,
+  last_name TEXT NOT NULL,
+  address TEXT NOT NULL,
+  city TEXT NOT NULL,
+  state TEXT NOT NULL,
+  zip TEXT NOT NULL,
+  total_amount NUMERIC(10,2) NOT NULL,
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'processing', 'shipped', 'delivered', 'cancelled')),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone can insert orders" ON orders FOR INSERT WITH CHECK (true);
+CREATE POLICY "Users can view their own orders" ON orders FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Admins can view all orders" ON orders FOR SELECT USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+CREATE POLICY "Admins can update orders" ON orders FOR UPDATE USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+
+-- 14. ORDER ITEMS
+CREATE TABLE IF NOT EXISTS public.order_items (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  order_id UUID REFERENCES public.orders(id) ON DELETE CASCADE NOT NULL,
+  product_id UUID REFERENCES public.products(id),
+  variant_id UUID REFERENCES public.product_variants(id), -- optional, if buying a specific variant
+  quantity INTEGER NOT NULL,
+  price_at_time NUMERIC(10,2) NOT NULL
+);
+
+ALTER TABLE public.order_items ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone can insert order items" ON order_items FOR INSERT WITH CHECK (true);
+CREATE POLICY "Users can view their own order items" ON order_items FOR SELECT USING (
+  EXISTS (SELECT 1 FROM orders WHERE orders.id = order_items.order_id AND orders.user_id = auth.uid())
+);
+CREATE POLICY "Admins can view all order items" ON order_items FOR SELECT USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+

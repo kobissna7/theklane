@@ -301,9 +301,25 @@ function EmailSignup() {
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [saving, setSaving] = useState(false)
+  
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (email) setSubmitted(true)
+    if (!email) return
+    setSaving(true)
+    try {
+      const { error } = await supabase.from('newsletter_subscribers').insert({ email })
+      if (error && !error.message.includes('duplicate')) throw error
+      setSubmitted(true)
+    } catch (err: any) {
+      if (err.message?.includes('duplicate')) {
+        setSubmitted(true) // already subscribed, fail silently
+      } else {
+        alert(err.message || 'Something went wrong')
+      }
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -328,9 +344,10 @@ function EmailSignup() {
               onChange={(e) => setEmail(e.target.value)}
               className="flex-1 bg-white border border-brand-gray-light/40 border-r-0 text-brand-dark placeholder:text-brand-dark/30 px-6 py-4 text-sm font-body focus:outline-none focus:ring-1 focus:ring-brand-secondary"
             />
-            <button type="submit"
-              className="bg-brand-secondary text-white px-8 py-4 font-heading text-2xs uppercase tracking-widest hover:bg-brand-secondary/90 transition-colors whitespace-nowrap">
-              Subscribe
+              <button type="submit"
+              disabled={saving}
+              className="bg-brand-secondary text-white px-8 py-4 font-heading text-2xs uppercase tracking-widest hover:bg-brand-secondary/90 transition-colors whitespace-nowrap disabled:opacity-50">
+              {saving ? '...' : 'Subscribe'}
             </button>
           </form>
         )}

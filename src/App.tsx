@@ -26,6 +26,8 @@ import AdminCategories from './pages/admin/AdminCategories'
 import AdminCollections from './pages/admin/AdminCollections'
 import AdminDrops from './pages/admin/AdminDrops'
 import AdminWaitlist from './pages/admin/AdminWaitlist'
+import AdminOrders from './pages/admin/AdminOrders'
+import AdminNewsletter from './pages/admin/AdminNewsletter'
 import AdminLogin from './pages/admin/AdminLogin'
 function StorefrontLayout() {
   return (
@@ -71,6 +73,8 @@ export default function App() {
             <Route path="collections" element={<AdminCollections />} />
             <Route path="drops" element={<AdminDrops />} />
             <Route path="waitlist" element={<AdminWaitlist />} />
+            <Route path="orders" element={<AdminOrders />} />
+            <Route path="newsletter" element={<AdminNewsletter />} />
           </Route>
         </Routes>
         <Toast />
