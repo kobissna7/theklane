@@ -37,7 +37,6 @@ function StorefrontLayout() {
       </main>
       <Footer />
       <CartDrawer />
-      <Toast />
     </div>
   )
 }
@@ -74,6 +73,7 @@ export default function App() {
             <Route path="waitlist" element={<AdminWaitlist />} />
           </Route>
         </Routes>
+        <Toast />
       </BrowserRouter>
     </AuthProvider>
   )
