@@ -124,3 +124,29 @@ CREATE POLICY "Admins can delete products" ON products FOR DELETE USING (EXISTS 
 CREATE POLICY "Admins can insert site_content" ON site_content FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
 CREATE POLICY "Admins can update site_content" ON site_content FOR UPDATE USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
 CREATE POLICY "Admins can delete site_content" ON site_content FOR DELETE USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+
+-- 10. WAITLIST ENTRIES
+CREATE TABLE IF NOT EXISTS public.waitlist_entries (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  product_id UUID REFERENCES public.products(id) ON DELETE CASCADE NOT NULL,
+  email TEXT NOT NULL,
+  name TEXT,
+  size TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(product_id, email)
+);
+
+ALTER TABLE public.waitlist_entries ENABLE ROW LEVEL SECURITY;
+
+-- Anyone can join the waitlist (insert only)
+CREATE POLICY "Anyone can join waitlist" ON waitlist_entries FOR INSERT WITH CHECK (true);
+
+-- Admins can view and manage waitlist
+CREATE POLICY "Admins can view waitlist" ON waitlist_entries FOR SELECT USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+CREATE POLICY "Admins can delete waitlist entries" ON waitlist_entries FOR DELETE USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+
+-- 11. SITE SETTINGS (used for homepage toggle flags)
+-- Add is_drop column to collections if it doesn't exist (for Drops feature)
+ALTER TABLE public.collections ADD COLUMN IF NOT EXISTS is_drop BOOLEAN DEFAULT false;
+ALTER TABLE public.collections ADD COLUMN IF NOT EXISTS drop_date TIMESTAMPTZ;
+

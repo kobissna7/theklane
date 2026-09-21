@@ -89,13 +89,11 @@ export function Header() {
             </NavLink>
           </nav>
 
-          {/* Logo center */}
+          {/* Logo center — pure text */}
           <Link to="/" className="absolute left-1/2 -translate-x-1/2">
-            <img 
-              src="/logo-transparent.png" 
-              alt="KLANÉ" 
-              className="h-20 md:h-24 object-contain scale-125"
-            />
+            <span className="klane-logo text-brand-black font-logo font-light text-2xl sm:text-3xl tracking-[0.18em] uppercase select-none">
+              klané
+            </span>
           </Link>
 
           {/* Right icons */}

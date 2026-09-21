@@ -10,6 +10,7 @@ import { QuantityStepper } from '../../components/product/QuantityStepper'
 import { Button } from '../../components/ui/Button'
 import { Badge } from '../../components/ui/Badge'
 import { ProductCard } from '../../components/product/ProductCard'
+import { WaitlistModal } from '../../components/product/WaitlistModal'
 
 export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>()
@@ -22,6 +23,8 @@ export default function ProductDetail() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [selectedVariantId, setSelectedVariantId] = useState<string>('')
   const [quantity, setQuantity] = useState(1)
+  const [waitlistOpen, setWaitlistOpen] = useState(false)
+  const [shareOpen, setShareOpen] = useState(false)
 
   const addItem = useCartStore(state => state.addItem)
   const setIsOpen = useCartStore(state => state.setIsOpen)
@@ -85,8 +88,20 @@ export default function ProductDetail() {
     setIsOpen(true) // Open cart drawer
   }
 
+  const isOutOfStock = selectedVariant && selectedVariant.stock_quantity <= 0
+
   return (
-    <div className="bg-brand-cream min-h-screen pt-24 pb-32 animate-fade-in">
+    <>
+    {product && (
+      <WaitlistModal
+        productId={product.id}
+        productName={product.name}
+        productSlug={product.slug}
+        isOpen={waitlistOpen || shareOpen}
+        onClose={() => { setWaitlistOpen(false); setShareOpen(false) }}
+      />
+    )}
+    <div className="bg-white min-h-screen pt-24 pb-32 animate-fade-in">
       <div className="container mx-auto px-4 lg:px-8">
         
         {/* Breadcrumb (simplified) */}
@@ -168,26 +183,45 @@ export default function ProductDetail() {
             )}
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-4 mb-12 border-t border-brand-gray-light/30 pt-8">
-              <div className="flex-shrink-0">
-                <QuantityStepper
-                  quantity={quantity}
-                  onChange={setQuantity}
-                  max={selectedVariant?.stock_quantity || 1}
-                />
-              </div>
-              <Button
-                variant="primary"
-                size="lg"
-                className="flex-1"
-                disabled={!selectedVariant || selectedVariant.stock_quantity <= 0}
-                onClick={handleAddToCart}
+              {!isOutOfStock && (
+                <div className="flex-shrink-0">
+                  <QuantityStepper
+                    quantity={quantity}
+                    onChange={setQuantity}
+                    max={selectedVariant?.stock_quantity || 1}
+                  />
+                </div>
+              )}
+              {isOutOfStock ? (
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  className="flex-1 border-brand-secondary text-brand-secondary hover:bg-brand-secondary hover:text-white"
+                  onClick={() => setWaitlistOpen(true)}
+                >
+                  🔔 Join Waitlist
+                </Button>
+              ) : (
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="flex-1"
+                  disabled={!selectedVariant}
+                  onClick={handleAddToCart}
+                >
+                  {!selectedVariant ? 'Select Option' : 'Add to Cart'}
+                </Button>
+              )}
+              {/* Share button */}
+              <button
+                onClick={() => setShareOpen(true)}
+                title="Share this product"
+                className="flex-shrink-0 w-12 h-12 border border-gray-200 rounded-lg flex items-center justify-center text-brand-dark/40 hover:text-brand-secondary hover:border-brand-secondary/30 transition-colors"
               >
-                {!selectedVariant
-                  ? 'Select Option'
-                  : selectedVariant.stock_quantity <= 0
-                  ? 'Out of Stock'
-                  : 'Add to Cart'}
-              </Button>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                </svg>
+              </button>
             </div>
 
             {/* Product Details Accordion Stubs */}
@@ -255,5 +289,6 @@ export default function ProductDetail() {
 
       </div>
     </div>
+    </>
   )
 }

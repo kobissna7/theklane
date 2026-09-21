@@ -4,19 +4,19 @@
 
 @layer base {
   :root {
-    --brand-cream: #F9F7F4;
-    --brand-cream-dark: #F0EDE8;
-    --brand-black: #121210;
-    --brand-charcoal: #2A2A28;
-    --brand-gray: #6B6B68;
-    --brand-gray-light: #C8C6C2;
-    --brand-sand: #C8A882;
-    --brand-sand-dark: #A8845E;
-    --brand-sand-light: #E8D4BC;
+    --brand-cream: #ffffff;
+    --brand-cream-dark: #ffffff;
+    --brand-black: #090103;
+    --brand-charcoal: #1A1113;
+    --brand-gray: #7A6D70;
+    --brand-gray-light: #D6C8CA;
+    --brand-sand: #DEB2B4;
+    --brand-sand-dark: #C48A90;
+    --brand-sand-light: #F0D8DC;
   }
 
   body {
-    @apply bg-brand-cream text-brand-black antialiased font-body selection:bg-brand-sand selection:text-brand-black;
+    @apply bg-white text-brand-black antialiased font-body selection:bg-brand-primary/30 selection:text-brand-black;
   }
 
   /* Custom scrollbar */
@@ -24,9 +24,29 @@
     @apply w-1.5;
   }
   ::-webkit-scrollbar-track {
-    @apply bg-brand-cream-dark;
+    @apply bg-gray-100;
   }
   ::-webkit-scrollbar-thumb {
     @apply bg-brand-gray-light hover:bg-brand-gray transition-colors;
   }
 }
+
+/* klané text logo — name shifter animation */
+@layer components {
+  .klane-logo {
+    font-family: 'Cormorant Garamond', serif;
+    letter-spacing: 0.18em;
+    transition: letter-spacing 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 0.3s ease;
+  }
+  .klane-logo:hover {
+    letter-spacing: 0.28em;
+  }
+
+  /* Admin sidebar active item glow */
+  .admin-nav-active {
+    background: linear-gradient(135deg, rgba(130, 15, 70, 0.12) 0%, rgba(222, 178, 180, 0.08) 100%);
+    border-left: 2px solid #820F46;
+  }
+}
+

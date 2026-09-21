@@ -13,6 +13,15 @@ interface ContentData {
   featured_banner_url: string
   shop_all_banner_url: string
   instagram_images: string[]
+  // Section toggles
+  show_our_story: boolean
+  show_best_sellers: boolean
+  show_new_arrivals: boolean
+  show_summer_drops: boolean
+  show_testimonials: boolean
+  show_featured_banner: boolean
+  show_shop_all_banner: boolean
+  show_instagram: boolean
 }
 
 const defaultContent: ContentData = {
@@ -22,7 +31,51 @@ const defaultContent: ContentData = {
   our_story_body: 'KLANÉ was born from a desire to redefine contemporary elegance. Every piece in our collection is a testament to meticulous craftsmanship and timeless design.',
   featured_banner_url: '',
   shop_all_banner_url: '',
-  instagram_images: []
+  instagram_images: [],
+  show_our_story: true,
+  show_best_sellers: true,
+  show_new_arrivals: true,
+  show_summer_drops: true,
+  show_testimonials: true,
+  show_featured_banner: false,
+  show_shop_all_banner: true,
+  show_instagram: true,
+}
+
+// Toggle switch component
+function Toggle({ value, onChange, id }: { value: boolean; onChange: (v: boolean) => void; id: string }) {
+  return (
+    <button
+      id={id}
+      onClick={() => onChange(!value)}
+      className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+        value ? 'bg-brand-secondary' : 'bg-gray-200'
+      }`}
+      role="switch"
+      aria-checked={value}
+    >
+      <span
+        className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition duration-200 ease-in-out ${
+          value ? 'translate-x-5' : 'translate-x-0'
+        }`}
+      />
+    </button>
+  )
+}
+
+// Section toggle row
+function SectionToggle({ label, description, value, onChange, id }: {
+  label: string; description?: string; value: boolean; onChange: (v: boolean) => void; id: string
+}) {
+  return (
+    <div className="flex items-center justify-between py-3 px-4 rounded-xl hover:bg-gray-50 transition-colors">
+      <div className="flex-1 pr-4">
+        <p className="font-heading text-sm uppercase tracking-wider text-brand-dark">{label}</p>
+        {description && <p className="text-xs text-brand-dark/40 font-body mt-0.5">{description}</p>}
+      </div>
+      <Toggle id={id} value={value} onChange={onChange} />
+    </div>
+  )
 }
 
 export default function AdminContent() {
@@ -39,13 +92,15 @@ export default function AdminContent() {
     try {
       const { data, error } = await supabase.from('site_settings').select('*')
       if (error) throw error
-      
+
       const newContent = { ...defaultContent }
       if (data) {
         data.forEach(setting => {
           if (setting.key in newContent) {
             if (setting.key === 'instagram_images') {
               try { newContent.instagram_images = JSON.parse(setting.message || '[]') } catch(e){}
+            } else if (typeof (newContent as any)[setting.key] === 'boolean') {
+              ;(newContent as any)[setting.key] = setting.message === 'true' || setting.is_enabled === true
             } else {
               ;(newContent as any)[setting.key] = setting.link_url || setting.message || ''
             }
@@ -61,17 +116,13 @@ export default function AdminContent() {
     if (!e.target.files?.[0]) return
     setUploadingFor(key)
     try {
-      // Use webp for images, keep original for video
       const isVideo = e.target.files[0].type.startsWith('video/')
       const file = isVideo ? e.target.files[0] : await convertToWebp(e.target.files[0])
       const ext = isVideo ? e.target.files[0].name.split('.').pop() : 'webp'
       const fileName = `content/${key}-${Date.now()}.${ext}`
-      
       const { error: upErr } = await supabase.storage.from('public-assets').upload(fileName, file, { upsert: false })
       if (upErr) throw upErr
-      
       const { data: { publicUrl } } = supabase.storage.from('public-assets').getPublicUrl(fileName)
-      
       if (key === 'instagram_images') {
         setContent(c => ({ ...c, instagram_images: [...c.instagram_images, publicUrl] }))
       } else {
@@ -95,14 +146,18 @@ export default function AdminContent() {
     try {
       const updates = Object.keys(content).map(key => {
         const val = (content as any)[key]
+        const isBool = typeof val === 'boolean'
         return {
           key,
-          message: key === 'instagram_images' ? JSON.stringify(val) : (['our_story_heading', 'our_story_subheading', 'our_story_body'].includes(key) ? val : null),
-          link_url: ['instagram_images', 'our_story_heading', 'our_story_subheading', 'our_story_body'].includes(key) ? null : val,
+          message: isBool
+            ? String(val)
+            : key === 'instagram_images'
+            ? JSON.stringify(val)
+            : ['our_story_heading', 'our_story_subheading', 'our_story_body'].includes(key) ? val : null,
+          link_url: (!isBool && !['instagram_images', 'our_story_heading', 'our_story_subheading', 'our_story_body'].includes(key)) ? val : null,
           is_enabled: true
         }
       })
-
       const { error } = await supabase.from('site_settings').upsert(updates, { onConflict: 'key' })
       if (error) throw error
       addToast('success', 'Homepage content updated!')
@@ -110,49 +165,69 @@ export default function AdminContent() {
     finally { setSaving(false) }
   }
 
-  if (loading) return <p className="p-8 font-body text-brand-dark/50">Loading...</p>
+  if (loading) return (
+    <div className="flex items-center justify-center py-24">
+      <div className="w-6 h-6 border-2 border-brand-secondary/30 border-t-brand-secondary rounded-full animate-spin" />
+    </div>
+  )
 
   return (
-    <div className="bg-white p-8 shadow-sm border border-brand-dark/5 max-w-4xl">
-      <div className="flex justify-between items-center mb-6 border-b border-brand-dark/10 pb-4">
-        <div>
-          <h2 className="font-heading text-xl uppercase tracking-widest">Homepage Content</h2>
-          <p className="text-xs text-brand-dark/50 font-body mt-1">Manage all visual and text content on the front page</p>
+    <div className="max-w-4xl space-y-8">
+
+      {/* Section Visibility Toggles */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="px-6 py-5 border-b border-gray-100">
+          <h2 className="font-heading text-base uppercase tracking-widest text-brand-dark">Homepage Sections</h2>
+          <p className="text-xs text-brand-dark/40 font-body mt-1">Toggle which sections appear on the homepage</p>
         </div>
-        <Button variant="primary" size="sm" onClick={handleSave} isLoading={saving}>Save Changes</Button>
+        <div className="p-4 space-y-1">
+          <SectionToggle id="toggle-our-story" label="Our Story" description="Brand narrative section" value={content.show_our_story} onChange={v => setContent(c => ({ ...c, show_our_story: v }))} />
+          <SectionToggle id="toggle-summer-drops" label="Summer Drops" description="Limited release rail" value={content.show_summer_drops} onChange={v => setContent(c => ({ ...c, show_summer_drops: v }))} />
+          <SectionToggle id="toggle-best-sellers" label="Best Sellers" description="Featured products rail" value={content.show_best_sellers} onChange={v => setContent(c => ({ ...c, show_best_sellers: v }))} />
+          <SectionToggle id="toggle-new-arrivals" label="New Arrivals" description="Latest products rail" value={content.show_new_arrivals} onChange={v => setContent(c => ({ ...c, show_new_arrivals: v }))} />
+          <SectionToggle id="toggle-featured-banner" label="Featured Collection Banner" description="Full-width editorial banner" value={content.show_featured_banner} onChange={v => setContent(c => ({ ...c, show_featured_banner: v }))} />
+          <SectionToggle id="toggle-testimonials" label="Testimonials" description="Customer reviews carousel" value={content.show_testimonials} onChange={v => setContent(c => ({ ...c, show_testimonials: v }))} />
+          <SectionToggle id="toggle-shop-all-banner" label="Full Edit Banner" description="Shop all call-to-action" value={content.show_shop_all_banner} onChange={v => setContent(c => ({ ...c, show_shop_all_banner: v }))} />
+          <SectionToggle id="toggle-instagram" label="Instagram Grid" description="Social media feed section" value={content.show_instagram} onChange={v => setContent(c => ({ ...c, show_instagram: v }))} />
+        </div>
       </div>
 
-      <div className="space-y-10">
-        
-        {/* HERO */}
-        <section className="space-y-4">
-          <h3 className="font-heading uppercase tracking-widest text-sm text-brand-dark border-b border-brand-dark/10 pb-2">Hero Video</h3>
+      {/* Hero Video */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="px-6 py-5 border-b border-gray-100">
+          <h2 className="font-heading text-base uppercase tracking-widest text-brand-dark">Hero Video</h2>
+        </div>
+        <div className="p-6">
           <div className="flex gap-4 items-start">
-            <div className="w-48 h-27 bg-brand-dark/5 border border-brand-dark/10 overflow-hidden flex-shrink-0">
+            <div className="w-48 h-28 bg-gray-50 border border-gray-100 overflow-hidden flex-shrink-0 rounded-lg">
               {content.hero_video_url ? (
                 <video src={content.hero_video_url} className="w-full h-full object-cover" muted playsInline />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-xs text-brand-dark/30 font-body">No Video</div>
               )}
             </div>
-            <div className="flex-1 space-y-2">
+            <div className="flex-1 space-y-3">
               <Field label="Video URL">
                 <input className={inputClass} value={content.hero_video_url} onChange={e => setContent(c => ({ ...c, hero_video_url: e.target.value }))} />
               </Field>
               <div>
                 <span className="text-xs text-brand-dark/50 font-body mr-3">OR upload file:</span>
-                <label className="cursor-pointer inline-block border border-brand-dark/20 px-3 py-1 text-xs uppercase tracking-widest font-heading hover:border-brand-secondary transition-colors">
+                <label className="cursor-pointer inline-block bg-gray-50 hover:bg-gray-100 border border-gray-200 px-4 py-2 text-xs uppercase tracking-widest font-heading rounded-lg transition-colors">
                   {uploadingFor === 'hero_video_url' ? 'Uploading...' : 'Upload Video'}
                   <input type="file" accept="video/*" className="hidden" onChange={e => handleImageUpload(e, 'hero_video_url')} disabled={!!uploadingFor} />
                 </label>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </div>
 
-        {/* OUR STORY */}
-        <section className="space-y-4">
-          <h3 className="font-heading uppercase tracking-widest text-sm text-brand-dark border-b border-brand-dark/10 pb-2">Our Story Section</h3>
+      {/* Our Story */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="px-6 py-5 border-b border-gray-100">
+          <h2 className="font-heading text-base uppercase tracking-widest text-brand-dark">Our Story Section</h2>
+        </div>
+        <div className="p-6 space-y-4">
           <Field label="Subheading (Small text above)">
             <input className={inputClass} value={content.our_story_subheading} onChange={e => setContent(c => ({ ...c, our_story_subheading: e.target.value }))} />
           </Field>
@@ -162,67 +237,79 @@ export default function AdminContent() {
           <Field label="Body Paragraph">
             <textarea className={textareaClass} rows={4} value={content.our_story_body} onChange={e => setContent(c => ({ ...c, our_story_body: e.target.value }))} />
           </Field>
-        </section>
+        </div>
+      </div>
 
-        {/* BANNERS */}
-        <section className="space-y-4">
-          <h3 className="font-heading uppercase tracking-widest text-sm text-brand-dark border-b border-brand-dark/10 pb-2">Category Banners</h3>
-          
+      {/* Banners */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="px-6 py-5 border-b border-gray-100">
+          <h2 className="font-heading text-base uppercase tracking-widest text-brand-dark">Banners</h2>
+        </div>
+        <div className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Field label="Featured Collection Banner (Tall)">
-                <div className="h-48 bg-brand-dark/5 border border-brand-dark/10 mb-2 overflow-hidden relative">
+            <div className="space-y-3">
+              <Field label="Featured Collection Banner">
+                <div className="h-40 bg-gray-50 border border-gray-100 mb-2 overflow-hidden relative rounded-lg">
                   {content.featured_banner_url && <img src={content.featured_banner_url} className="w-full h-full object-cover" alt="" />}
                 </div>
-                <label className="cursor-pointer block text-center border border-brand-dark/20 px-3 py-2 text-xs uppercase tracking-widest font-heading hover:border-brand-secondary transition-colors w-full">
+                <label className="cursor-pointer block text-center bg-gray-50 hover:bg-gray-100 border border-gray-200 px-3 py-2 text-xs uppercase tracking-widest font-heading rounded-lg transition-colors w-full">
                   {uploadingFor === 'featured_banner_url' ? 'Uploading...' : 'Upload Image'}
                   <input type="file" accept="image/*" className="hidden" onChange={e => handleImageUpload(e, 'featured_banner_url')} disabled={!!uploadingFor} />
                 </label>
               </Field>
             </div>
-            
-            <div className="space-y-2">
-              <Field label="Shop All Banner (Wide)">
-                <div className="h-48 bg-brand-dark/5 border border-brand-dark/10 mb-2 overflow-hidden relative">
+            <div className="space-y-3">
+              <Field label="Shop All / Full Edit Banner">
+                <div className="h-40 bg-gray-50 border border-gray-100 mb-2 overflow-hidden relative rounded-lg">
                   {content.shop_all_banner_url && <img src={content.shop_all_banner_url} className="w-full h-full object-cover" alt="" />}
                 </div>
-                <label className="cursor-pointer block text-center border border-brand-dark/20 px-3 py-2 text-xs uppercase tracking-widest font-heading hover:border-brand-secondary transition-colors w-full">
+                <label className="cursor-pointer block text-center bg-gray-50 hover:bg-gray-100 border border-gray-200 px-3 py-2 text-xs uppercase tracking-widest font-heading rounded-lg transition-colors w-full">
                   {uploadingFor === 'shop_all_banner_url' ? 'Uploading...' : 'Upload Image'}
                   <input type="file" accept="image/*" className="hidden" onChange={e => handleImageUpload(e, 'shop_all_banner_url')} disabled={!!uploadingFor} />
                 </label>
               </Field>
             </div>
           </div>
-        </section>
+        </div>
+      </div>
 
-        {/* INSTAGRAM */}
-        <section className="space-y-4">
-          <h3 className="font-heading uppercase tracking-widest text-sm text-brand-dark border-b border-brand-dark/10 pb-2 flex justify-between items-center">
-            <span>Instagram Grid</span>
-            <label className="cursor-pointer inline-block border border-brand-dark/20 px-3 py-1 text-xs uppercase tracking-widest font-heading hover:border-brand-secondary transition-colors font-normal">
-              {uploadingFor === 'instagram_images' ? 'Uploading...' : 'Add Image'}
-              <input type="file" accept="image/*" className="hidden" onChange={e => handleImageUpload(e, 'instagram_images')} disabled={!!uploadingFor} />
-            </label>
-          </h3>
-          
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      {/* Instagram Grid */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+          <div>
+            <h2 className="font-heading text-base uppercase tracking-widest text-brand-dark">Instagram Grid</h2>
+            <p className="text-xs text-brand-dark/40 font-body mt-0.5">{content.instagram_images.length} / 6 images</p>
+          </div>
+          <label className="cursor-pointer inline-block bg-brand-secondary/10 hover:bg-brand-secondary/20 text-brand-secondary border border-brand-secondary/20 px-4 py-2 text-xs uppercase tracking-widest font-heading rounded-lg transition-colors">
+            {uploadingFor === 'instagram_images' ? 'Uploading...' : 'Add Image'}
+            <input type="file" accept="image/*" className="hidden" onChange={e => handleImageUpload(e, 'instagram_images')} disabled={!!uploadingFor} />
+          </label>
+        </div>
+        <div className="p-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
             {content.instagram_images.map((url, i) => (
-              <div key={i} className="aspect-square relative group bg-brand-dark/5 border border-brand-dark/10 overflow-hidden">
+              <div key={i} className="aspect-square relative group bg-gray-50 rounded-lg overflow-hidden">
                 <img src={url} className="w-full h-full object-cover" alt="" />
-                <button 
+                <button
                   onClick={() => handleInstaRemove(i)}
-                  className="absolute inset-0 bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-xs uppercase tracking-widest"
+                  className="absolute inset-0 bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-xs uppercase tracking-widest rounded-lg"
                 >Remove</button>
               </div>
             ))}
             {content.instagram_images.length === 0 && (
-              <div className="col-span-full py-8 text-center text-xs font-body text-brand-dark/50 italic border border-dashed border-brand-dark/20">
-                No images added. Add some to show the Instagram feed.
+              <div className="col-span-full py-10 text-center text-xs font-body text-brand-dark/40 italic border border-dashed border-gray-200 rounded-lg">
+                No images added yet. Upload up to 6 photos for the Instagram grid.
               </div>
             )}
           </div>
-        </section>
+        </div>
+      </div>
 
+      {/* Save Button */}
+      <div className="flex justify-end pb-8">
+        <Button variant="primary" onClick={handleSave} isLoading={saving} className="px-10">
+          Save All Changes
+        </Button>
       </div>
     </div>
   )

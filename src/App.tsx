@@ -25,6 +25,7 @@ import AdminProducts from './pages/admin/AdminProducts'
 import AdminCategories from './pages/admin/AdminCategories'
 import AdminCollections from './pages/admin/AdminCollections'
 import AdminDrops from './pages/admin/AdminDrops'
+import AdminWaitlist from './pages/admin/AdminWaitlist'
 function StorefrontLayout() {
   return (
     <div className="flex flex-col min-h-screen">
@@ -66,6 +67,7 @@ export default function App() {
             <Route path="categories" element={<AdminCategories />} />
             <Route path="collections" element={<AdminCollections />} />
             <Route path="drops" element={<AdminDrops />} />
+            <Route path="waitlist" element={<AdminWaitlist />} />
           </Route>
         </Routes>
       </BrowserRouter>

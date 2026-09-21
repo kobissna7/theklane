@@ -10,11 +10,9 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 lg:col-span-2">
             <Link to="/" className="inline-block">
-                <img 
-                  src="/logo-transparent.png" 
-                  alt="KLANÉ" 
-                  className="h-16 md:h-20 object-contain brightness-0 invert origin-left scale-125"
-                />
+              <span className="klane-logo text-white font-logo font-light text-2xl tracking-[0.18em] uppercase select-none">
+                klané
+              </span>
             </Link>
             <p className="mt-4 text-sm text-white/60 font-body max-w-xs leading-relaxed">
               For the woman who has found her voice through fashion. Clothes are not just what we wear — they are who we are.

@@ -9,12 +9,12 @@ export default {
           primary: '#DEB2B4', // Soft blush
           secondary: '#820F46', // Deep berry
           dark: '#090103', // Black
-          neutral: '#F3ECDC', // Warm Cream
+          neutral: '#FFFFFF', // Warm Cream
           accent: '#DE99AB', // Dusty Pink
           base: '#FFFFFF', // White
           // Keep these for UI elements that might still rely on them, mapping to new colors
-          cream: '#F3ECDC',
-          'cream-dark': '#EFE5CF',
+          cream: '#FFFFFF',
+          'cream-dark': '#FFFFFF',
           black: '#090103',
           charcoal: '#1A1113',
           gray: '#7A6D70',
@@ -23,8 +23,9 @@ export default {
         },
       },
       fontFamily: {
-        heading: ['"Cormorant Garamond"', 'serif'],
-        body: ['Inter', 'sans-serif'],
+        logo: ['"Cormorant Garamond"', 'serif'],
+        heading: ['"Tenor Sans"', 'sans-serif'],
+        body: ['"Tenor Sans"', 'sans-serif'],
       },
       fontSize: {
         '2xs': ['0.625rem', { lineHeight: '1rem', letterSpacing: '0.12em' }],
