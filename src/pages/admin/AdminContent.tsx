@@ -49,7 +49,7 @@ function Toggle({ value, onChange, id }: { value: boolean; onChange: (v: boolean
       id={id}
       onClick={() => onChange(!value)}
       className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-        value ? 'bg-brand-secondary' : 'bg-gray-200'
+        value ? 'bg-brand-black' : 'bg-gray-200'
       }`}
       role="switch"
       aria-checked={value}
@@ -167,7 +167,7 @@ export default function AdminContent() {
 
   if (loading) return (
     <div className="flex items-center justify-center py-24">
-      <div className="w-6 h-6 border-2 border-brand-secondary/30 border-t-brand-secondary rounded-full animate-spin" />
+      <div className="w-6 h-6 border-2 border-brand-black/30 border-t-brand-black rounded-full animate-spin" />
     </div>
   )
 
@@ -280,7 +280,7 @@ export default function AdminContent() {
             <h2 className="font-heading text-base uppercase tracking-widest text-brand-dark">Instagram Grid</h2>
             <p className="text-xs text-brand-dark/40 font-body mt-0.5">{content.instagram_images.length} / 6 images</p>
           </div>
-          <label className="cursor-pointer inline-block bg-brand-secondary/10 hover:bg-brand-secondary/20 text-brand-secondary border border-brand-secondary/20 px-4 py-2 text-xs uppercase tracking-widest font-heading rounded-lg transition-colors">
+          <label className="cursor-pointer inline-block bg-gray-50 hover:bg-gray-100 text-brand-black border border-gray-200 px-4 py-2 text-xs uppercase tracking-widest font-heading rounded-lg transition-colors">
             {uploadingFor === 'instagram_images' ? 'Uploading...' : 'Add Image'}
             <input type="file" accept="image/*" className="hidden" onChange={e => handleImageUpload(e, 'instagram_images')} disabled={!!uploadingFor} />
           </label>

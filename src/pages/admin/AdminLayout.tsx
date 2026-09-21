@@ -76,7 +76,7 @@ export default function AdminLayout() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="w-8 h-8 border-2 border-brand-secondary/30 border-t-brand-secondary rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-brand-black/30 border-t-brand-black rounded-full animate-spin" />
       </div>
     )
   }
@@ -88,8 +88,8 @@ export default function AdminLayout() {
   if (!isAdmin) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-white font-body px-4 text-center">
-        <div className="w-16 h-16 bg-brand-secondary/10 rounded-full flex items-center justify-center mb-6">
-          <svg className="w-8 h-8 text-brand-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-6">
+          <svg className="w-8 h-8 text-brand-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
           </svg>
         </div>
@@ -97,7 +97,7 @@ export default function AdminLayout() {
         <p className="text-brand-dark/50 mb-8 max-w-sm font-body text-sm leading-relaxed">
           You don't have administrative privileges. Only store admins can access this portal. Please log in with an admin account.
         </p>
-        <Link to="/" className="font-heading text-xs uppercase tracking-widest text-brand-secondary hover:underline">
+        <Link to="/" className="font-heading text-xs uppercase tracking-widest text-brand-black hover:underline">
           Return to Store
         </Link>
         <button onClick={signOut} className="mt-6 text-xs text-brand-dark/30 uppercase tracking-widest hover:text-brand-dark transition-colors font-heading">
@@ -158,8 +158,8 @@ export default function AdminLayout() {
         {/* Footer — user */}
         <div className="px-4 py-4 border-t border-white/5">
           <div className="flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-white/5 transition-colors">
-            <div className="w-7 h-7 rounded-full bg-brand-secondary/30 flex items-center justify-center flex-shrink-0">
-              <svg className="w-3.5 h-3.5 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-7 h-7 rounded-full bg-gray-100/10 flex items-center justify-center flex-shrink-0">
+              <svg className="w-3.5 h-3.5 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </div>

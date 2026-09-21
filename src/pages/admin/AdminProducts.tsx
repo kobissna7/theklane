@@ -139,14 +139,14 @@ export default function AdminProducts() {
   )
 
   return (
-    <div className="bg-white p-8 shadow-sm border border-brand-dark/5">
+    <div className="bg-white p-8 rounded-2xl shadow-xl shadow-brand-dark/5 border border-gray-100">
       <div className="flex flex-col sm:flex-row justify-between gap-4 items-start sm:items-center mb-6 border-b border-brand-dark/10 pb-4">
         <h2 className="font-heading text-xl uppercase tracking-widest">Products</h2>
         <div className="flex gap-3 w-full sm:w-auto">
           <input
             type="search" placeholder="Search products..."
             value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
-            className="flex-1 sm:w-48 border border-brand-dark/20 px-3 py-2 text-sm font-body focus:outline-none focus:border-brand-secondary"
+            className="flex-1 sm:w-48 border border-gray-200 rounded-lg px-4 py-2.5 text-sm font-body focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black transition-all"
           />
           <Button variant="primary" size="sm" onClick={openAdd}>Add Product</Button>
         </div>
@@ -163,7 +163,7 @@ export default function AdminProducts() {
           {filtered.map(product => {
             const primaryImage = product.product_images?.find(i => i.is_primary) || product.product_images?.[0]
             return (
-              <div key={product.id} className="border border-brand-dark/10 p-4">
+              <div key={product.id} className="border border-gray-100 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex gap-4">
                   {/* Primary image */}
                   <div className="flex-shrink-0 w-20 h-24 bg-brand-dark/5 overflow-hidden">
@@ -182,16 +182,16 @@ export default function AdminProducts() {
                         <p className="text-xs text-brand-dark/50 font-body mt-0.5">{product.slug}</p>
                       </div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        {product.is_featured && <span className="px-2 py-0.5 text-xs bg-brand-primary/30 text-brand-secondary">Featured</span>}
-                        {product.is_new_arrival && <span className="px-2 py-0.5 text-xs bg-blue-100 text-blue-700">New</span>}
-                        {product.is_on_sale && <span className="px-2 py-0.5 text-xs bg-yellow-100 text-yellow-700">Sale</span>}
-                        <span className={`px-2 py-0.5 text-xs ${product.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>{product.is_active ? 'Active' : 'Draft'}</span>
+                        {product.is_featured && <span className="px-3 py-1 rounded-full text-2xs uppercase tracking-widest bg-gray-100 text-brand-black">Featured</span>}
+                        {product.is_new_arrival && <span className="px-3 py-1 rounded-full text-2xs uppercase tracking-widest bg-blue-50 text-blue-700">New</span>}
+                        {product.is_on_sale && <span className="px-3 py-1 rounded-full text-2xs uppercase tracking-widest bg-yellow-50 text-yellow-700">Sale</span>}
+                        <span className={`px-3 py-1 rounded-full text-2xs uppercase tracking-widest ${product.is_active ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500'}`}>{product.is_active ? 'Active' : 'Draft'}</span>
                       </div>
                     </div>
 
                     <div className="flex gap-4 mt-2">
                       <p className="text-sm font-body text-brand-dark font-medium">${product.base_price}</p>
-                      {product.sale_price && <p className="text-sm font-body text-brand-secondary">${product.sale_price} sale</p>}
+                      {product.sale_price && <p className="text-sm font-body text-brand-black">${product.sale_price} sale</p>}
                       {product.category && <p className="text-xs font-body text-brand-dark/50">{product.category.name}</p>}
                     </div>
 
@@ -206,7 +206,7 @@ export default function AdminProducts() {
                           >×</button>
                         </div>
                       ))}
-                      <label className="w-10 h-10 border border-dashed border-brand-dark/30 flex items-center justify-center cursor-pointer hover:border-brand-secondary transition-colors text-brand-dark/40 hover:text-brand-secondary">
+                      <label className="w-10 h-10 border border-dashed border-gray-300 rounded-md flex items-center justify-center cursor-pointer hover:border-brand-black transition-colors text-brand-dark/40 hover:text-brand-black">
                         {uploadingFor === product.id ? '...' : '+'}
                         <input type="file" accept="image/*" className="hidden" onChange={e => handleImageUpload(e, product.id)} disabled={uploadingFor === product.id} />
                       </label>
@@ -215,8 +215,8 @@ export default function AdminProducts() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-4 mt-3 pt-3 border-t border-brand-dark/5">
-                  <button onClick={() => openEdit(product)} className="text-xs uppercase tracking-widest text-brand-secondary hover:text-brand-dark transition-colors">Edit</button>
+                <div className="flex gap-4 mt-4 pt-4 border-t border-gray-100">
+                  <button onClick={() => openEdit(product)} className="text-xs uppercase tracking-widest text-brand-black hover:text-brand-dark/70 transition-colors">Edit</button>
                   <button onClick={() => toggleActive(product.id, product.is_active)} className="text-xs uppercase tracking-widest text-brand-dark/40 hover:text-brand-dark transition-colors">
                     {product.is_active ? 'Set Draft' : 'Set Active'}
                   </button>

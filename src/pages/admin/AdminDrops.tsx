@@ -100,7 +100,7 @@ export default function AdminDrops() {
   }
 
   return (
-    <div className="bg-white p-8 shadow-sm border border-brand-dark/5">
+    <div className="bg-white p-8 rounded-2xl shadow-xl shadow-brand-dark/5 border border-gray-100">
       <div className="flex justify-between items-center mb-6 border-b border-brand-dark/10 pb-4">
         <div>
           <h2 className="font-heading text-xl uppercase tracking-widest">Drops</h2>
@@ -121,15 +121,15 @@ export default function AdminDrops() {
           {drops.map(drop => {
             const status = getDropStatus(drop.drop_date)
             return (
-              <div key={drop.id} className="flex items-center gap-4 p-4 border border-brand-dark/10 hover:border-brand-secondary/30 transition-colors">
-                {drop.image_url ? <img src={drop.image_url} className="w-16 h-16 object-cover flex-shrink-0" alt={drop.name} /> : <div className="w-16 h-16 bg-brand-dark/5 flex-shrink-0 flex items-center justify-center text-xs text-brand-dark/30">No img</div>}
+              <div key={drop.id} className="flex items-center gap-4 p-4 border border-gray-100 rounded-xl hover:border-brand-black/20 hover:shadow-sm transition-all bg-white">
+                {drop.image_url ? <img src={drop.image_url} className="w-16 h-16 rounded-lg object-cover flex-shrink-0" alt={drop.name} /> : <div className="w-16 h-16 bg-gray-50 rounded-lg flex-shrink-0 flex items-center justify-center text-xs text-brand-dark/30">No img</div>}
                 <div className="flex-1">
                   <p className="font-heading uppercase tracking-widest text-sm text-brand-dark">{drop.name}</p>
                   <p className="text-xs text-brand-dark/50 font-body mt-1">{drop.description || 'No description'}</p>
                 </div>
-                <span className={`px-2 py-1 text-xs ${status.color} flex-shrink-0`}>{status.label}</span>
-                <div className="flex gap-3 flex-shrink-0">
-                  <button onClick={() => openEdit(drop)} className="text-xs uppercase tracking-widest text-brand-secondary hover:text-brand-dark transition-colors">Edit</button>
+                <span className={`px-3 py-1 rounded-full text-2xs uppercase tracking-widest ${status.color} flex-shrink-0`}>{status.label}</span>
+                <div className="flex gap-4 flex-shrink-0 pl-4 border-l border-gray-100">
+                  <button onClick={() => openEdit(drop)} className="text-xs uppercase tracking-widest text-brand-black hover:text-brand-dark/70 transition-colors">Edit</button>
                   <button onClick={() => handleDelete(drop.id)} className="text-xs uppercase tracking-widest text-red-400 hover:text-red-600 transition-colors">Delete</button>
                 </div>
               </div>
@@ -150,8 +150,8 @@ export default function AdminDrops() {
             <input type="datetime-local" className={inputClass} value={form.drop_date} onChange={e => setForm(f => ({ ...f, drop_date: e.target.value }))} />
           </Field>
           <Field label="Cover Image">
-            {form.image_url && <img src={form.image_url} className="w-full h-40 object-cover mb-2" alt="preview" />}
-            <label className="cursor-pointer inline-block border border-brand-dark/20 px-4 py-2 text-xs uppercase tracking-widest font-heading hover:border-brand-secondary transition-colors">
+            {form.image_url && <img src={form.image_url} className="w-full h-40 object-cover mb-2 rounded-lg" alt="preview" />}
+            <label className="cursor-pointer inline-block border border-gray-200 rounded-lg px-4 py-2 text-xs uppercase tracking-widest font-heading hover:border-brand-black hover:bg-gray-50 transition-colors">
               {uploadingImage ? 'Uploading...' : 'Upload Image'}
               <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={uploadingImage} />
             </label>

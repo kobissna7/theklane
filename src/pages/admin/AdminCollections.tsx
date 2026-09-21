@@ -82,7 +82,7 @@ export default function AdminCollections() {
   }
 
   return (
-    <div className="bg-white p-8 shadow-sm border border-brand-dark/5">
+    <div className="bg-white p-8 rounded-2xl shadow-xl shadow-brand-dark/5 border border-gray-100">
       <div className="flex justify-between items-center mb-6 border-b border-brand-dark/10 pb-4">
         <h2 className="font-heading text-xl uppercase tracking-widest">Collections</h2>
         <Button variant="primary" size="sm" onClick={openAdd}>Add Collection</Button>
@@ -93,18 +93,18 @@ export default function AdminCollections() {
       ) : collections.length === 0 ? (
         <p className="text-center py-12 text-brand-dark/40 font-body italic">No collections yet.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {collections.map(col => (
-            <div key={col.id} className="border border-brand-dark/10 overflow-hidden group">
-              <div className="relative h-40 bg-brand-dark/5">
+            <div key={col.id} className="border border-gray-100 rounded-xl overflow-hidden group shadow-sm hover:shadow-md transition-shadow">
+              <div className="relative h-48 bg-gray-50">
                 {col.image_url ? <img src={col.image_url} className="w-full h-full object-cover" alt={col.name} /> : <div className="w-full h-full flex items-center justify-center text-xs text-brand-dark/30 font-body">No Image</div>}
-                <span className={`absolute top-2 right-2 px-2 py-1 text-xs ${col.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>{col.is_active ? 'Active' : 'Hidden'}</span>
+                <span className={`absolute top-3 right-3 px-3 py-1 rounded-full text-2xs uppercase tracking-widest ${col.is_active ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500'}`}>{col.is_active ? 'Active' : 'Hidden'}</span>
               </div>
               <div className="p-4">
                 <p className="font-heading uppercase tracking-widest text-sm text-brand-dark">{col.name}</p>
                 <p className="text-xs text-brand-dark/50 font-body mt-1 truncate">{col.description || 'No description'}</p>
-                <div className="flex gap-3 mt-3">
-                  <button onClick={() => openEdit(col)} className="text-xs uppercase tracking-widest text-brand-secondary hover:text-brand-dark transition-colors">Edit</button>
+                <div className="flex gap-4 mt-4 pt-4 border-t border-gray-100">
+                  <button onClick={() => openEdit(col)} className="text-xs uppercase tracking-widest text-brand-black hover:text-brand-dark/70 transition-colors">Edit</button>
                   <button onClick={() => handleDelete(col.id)} className="text-xs uppercase tracking-widest text-red-400 hover:text-red-600 transition-colors">Delete</button>
                 </div>
               </div>
@@ -125,8 +125,8 @@ export default function AdminCollections() {
             <textarea className={textareaClass} rows={3} value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} placeholder="Short description..." />
           </Field>
           <Field label="Cover Image">
-            {form.image_url && <img src={form.image_url} className="w-full h-40 object-cover mb-2" alt="preview" />}
-            <label className="cursor-pointer inline-block border border-brand-dark/20 px-4 py-2 text-xs uppercase tracking-widest font-heading hover:border-brand-secondary transition-colors">
+            {form.image_url && <img src={form.image_url} className="w-full h-40 object-cover mb-2 rounded-lg" alt="preview" />}
+            <label className="cursor-pointer inline-block border border-gray-200 rounded-lg px-4 py-2 text-xs uppercase tracking-widest font-heading hover:border-brand-black hover:bg-gray-50 transition-colors">
               {uploadingImage ? 'Uploading...' : 'Upload Image'}
               <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={uploadingImage} />
             </label>

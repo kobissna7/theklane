@@ -38,7 +38,7 @@ export default function AdminLogin() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 font-body relative overflow-hidden">
       {/* Decorative background blur */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-brand-secondary/5 rounded-full blur-3xl" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gray-200/20 rounded-full blur-3xl" />
       
       <div className="w-full max-w-sm relative z-10">
         <div className="text-center mb-8">
@@ -61,7 +61,7 @@ export default function AdminLogin() {
                 required
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm font-body focus:outline-none focus:border-brand-secondary focus:ring-1 focus:ring-brand-secondary text-brand-dark transition-all"
+                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm font-body focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black text-brand-dark transition-all"
                 placeholder="admin@theklane.com"
               />
             </div>
@@ -75,7 +75,7 @@ export default function AdminLogin() {
                 required
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm font-body focus:outline-none focus:border-brand-secondary focus:ring-1 focus:ring-brand-secondary text-brand-dark transition-all"
+                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm font-body focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black text-brand-dark transition-all"
                 placeholder="••••••••"
               />
             </div>

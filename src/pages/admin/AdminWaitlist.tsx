@@ -85,7 +85,7 @@ export default function AdminWaitlist() {
 
   if (loading) return (
     <div className="flex items-center justify-center py-24">
-      <div className="w-6 h-6 border-2 border-brand-secondary/30 border-t-brand-secondary rounded-full animate-spin" />
+      <div className="w-6 h-6 border-2 border-brand-black/30 border-t-brand-black rounded-full animate-spin" />
     </div>
   )
 
@@ -120,8 +120,8 @@ export default function AdminWaitlist() {
                 onClick={() => setExpanded(expanded === product.id ? null : product.id)}
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-9 h-9 bg-brand-secondary/10 rounded-full flex items-center justify-center">
-                    <span className="font-heading text-sm text-brand-secondary">{product.entry_count}</span>
+                  <div className="w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center">
+                    <span className="font-heading text-sm text-brand-black">{product.entry_count}</span>
                   </div>
                   <div className="text-left">
                     <p className="font-heading text-sm uppercase tracking-wider text-brand-dark">{product.name}</p>
@@ -131,7 +131,7 @@ export default function AdminWaitlist() {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={e => { e.stopPropagation(); exportCsv(product) }}
-                    className="font-heading text-2xs uppercase tracking-widest text-brand-secondary border border-brand-secondary/30 px-3 py-1.5 rounded-lg hover:bg-brand-secondary/5 transition-colors"
+                    className="font-heading text-2xs uppercase tracking-widest text-brand-black border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-colors"
                   >
                     Export CSV
                   </button>

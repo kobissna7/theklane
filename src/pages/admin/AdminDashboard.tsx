@@ -43,7 +43,7 @@ export default function AdminDashboard() {
     <div className="space-y-8">
       {/* Greeting */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
-        <div className="w-12 h-12 bg-brand-secondary/10 rounded-full flex items-center justify-center text-lg flex-shrink-0">
+        <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-lg flex-shrink-0">
           ✦
         </div>
         <div>
@@ -53,7 +53,7 @@ export default function AdminDashboard() {
           </p>
         </div>
         <div className="ml-auto hidden sm:block">
-          <Link to="/" className="inline-flex items-center gap-2 font-heading text-2xs uppercase tracking-widest text-brand-secondary border border-brand-secondary/30 px-4 py-2 rounded-lg hover:bg-brand-secondary/5 transition-colors">
+          <Link to="/" className="inline-flex items-center gap-2 font-heading text-2xs uppercase tracking-widest text-brand-black border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
             View Store →
           </Link>
         </div>
@@ -67,7 +67,7 @@ export default function AdminDashboard() {
               <div className="flex items-start justify-between mb-4">
                 <span className="text-2xl">{icon}</span>
                 {href && (
-                  <svg className="w-4 h-4 text-brand-dark/20 group-hover:text-brand-secondary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-brand-dark/20 group-hover:text-brand-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
                   </svg>
                 )}
@@ -94,10 +94,10 @@ export default function AdminDashboard() {
               className="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition-colors group"
             >
               <div>
-                <p className="font-heading text-sm uppercase tracking-wider text-brand-dark group-hover:text-brand-secondary transition-colors">{label}</p>
+                <p className="font-heading text-sm uppercase tracking-wider text-brand-dark group-hover:text-brand-black transition-colors">{label}</p>
                 <p className="font-body text-xs text-brand-dark/40 mt-0.5">{desc}</p>
               </div>
-              <svg className="w-4 h-4 text-brand-dark/20 group-hover:text-brand-secondary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-brand-dark/20 group-hover:text-brand-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
               </svg>
             </Link>

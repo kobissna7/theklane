@@ -87,7 +87,7 @@ export default function AdminCategories() {
   }
 
   return (
-    <div className="bg-white p-8 shadow-sm border border-brand-dark/5">
+    <div className="bg-white p-8 rounded-2xl shadow-xl shadow-brand-dark/5 border border-gray-100">
       <div className="flex justify-between items-center mb-6 border-b border-brand-dark/10 pb-4">
         <h2 className="font-heading text-xl uppercase tracking-widest">Categories</h2>
         <Button variant="primary" size="sm" onClick={openAdd}>Add Category</Button>
@@ -101,27 +101,27 @@ export default function AdminCategories() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-brand-dark/10">
+              <tr className="border-b border-gray-100">
                 {['Image','Name','Slug','Sort','Status','Actions'].map(h => (
-                  <th key={h} className="py-3 px-4 font-heading uppercase tracking-widest text-xs text-brand-dark/60">{h}</th>
+                  <th key={h} className="py-4 px-4 font-heading uppercase tracking-widest text-2xs text-brand-dark/40">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody className="font-body text-sm">
               {categories.map(cat => (
-                <tr key={cat.id} className="border-b border-brand-dark/5 hover:bg-brand-neutral/20 transition-colors">
+                <tr key={cat.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
                   <td className="py-3 px-4">
-                    {cat.image_url ? <img src={cat.image_url} className="w-12 h-12 object-cover" alt={cat.name} /> : <div className="w-12 h-12 bg-brand-dark/5 flex items-center justify-center text-xs text-brand-dark/30">None</div>}
+                    {cat.image_url ? <img src={cat.image_url} className="w-12 h-12 rounded-lg object-cover" alt={cat.name} /> : <div className="w-12 h-12 bg-gray-50 rounded-lg flex items-center justify-center text-xs text-brand-dark/30">None</div>}
                   </td>
                   <td className="py-3 px-4 font-medium">{cat.name}</td>
                   <td className="py-3 px-4 text-brand-dark/50">{cat.slug}</td>
                   <td className="py-3 px-4">{cat.sort_order}</td>
                   <td className="py-3 px-4">
-                    <span className={`px-2 py-1 text-xs ${cat.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>{cat.is_active ? 'Active' : 'Hidden'}</span>
+                    <span className={`px-3 py-1 rounded-full text-2xs uppercase tracking-widest ${cat.is_active ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500'}`}>{cat.is_active ? 'Active' : 'Hidden'}</span>
                   </td>
                   <td className="py-3 px-4">
                     <div className="flex gap-3">
-                      <button onClick={() => openEdit(cat)} className="text-xs uppercase tracking-widest text-brand-secondary hover:text-brand-dark transition-colors">Edit</button>
+                      <button onClick={() => openEdit(cat)} className="text-xs uppercase tracking-widest text-brand-black hover:text-brand-dark/70 transition-colors">Edit</button>
                       <button onClick={() => handleDelete(cat.id)} className="text-xs uppercase tracking-widest text-red-400 hover:text-red-600 transition-colors">Delete</button>
                     </div>
                   </td>
@@ -141,8 +141,8 @@ export default function AdminCategories() {
             <input className={inputClass} value={form.slug} onChange={e => setForm(f => ({ ...f, slug: e.target.value }))} />
           </Field>
           <Field label="Cover Image">
-            {form.image_url && <img src={form.image_url} className="w-full h-40 object-cover mb-2" alt="preview" />}
-            <label className="cursor-pointer inline-block border border-brand-dark/20 px-4 py-2 text-xs uppercase tracking-widest font-heading hover:border-brand-secondary transition-colors">
+            {form.image_url && <img src={form.image_url} className="w-full h-40 object-cover mb-2 rounded-lg" alt="preview" />}
+            <label className="cursor-pointer inline-block border border-gray-200 rounded-lg px-4 py-2 text-xs uppercase tracking-widest font-heading hover:border-brand-black hover:bg-gray-50 transition-colors">
               {uploadingImage ? 'Uploading...' : 'Upload Image'}
               <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={uploadingImage} />
             </label>
