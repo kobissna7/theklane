@@ -145,7 +145,28 @@ CREATE POLICY "Anyone can join waitlist" ON waitlist_entries FOR INSERT WITH CHE
 CREATE POLICY "Admins can view waitlist" ON waitlist_entries FOR SELECT USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
 CREATE POLICY "Admins can delete waitlist entries" ON waitlist_entries FOR DELETE USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
 
--- 11. SITE SETTINGS (used for homepage toggle flags)
+-- 11. SITE SETTINGS (used for homepage toggle flags and announcement bar)
+CREATE TABLE IF NOT EXISTS public.site_settings (
+  key TEXT PRIMARY KEY,
+  message TEXT,
+  link_url TEXT,
+  is_enabled BOOLEAN DEFAULT true,
+  starts_at TIMESTAMPTZ,
+  expires_at TIMESTAMPTZ,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.site_settings ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Site settings are viewable by everyone" ON site_settings FOR SELECT USING (true);
+CREATE POLICY "Admins can insert site settings" ON site_settings FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+CREATE POLICY "Admins can update site settings" ON site_settings FOR UPDATE USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+CREATE POLICY "Admins can delete site settings" ON site_settings FOR DELETE USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
+
+INSERT INTO public.site_settings (key, message, is_enabled) VALUES 
+('announcement_bar', 'Welcome to KLANÉ. Free shipping on all orders over $200.', true)
+ON CONFLICT (key) DO NOTHING;
+
 -- Add is_drop column to collections if it doesn't exist (for Drops feature)
 ALTER TABLE public.collections ADD COLUMN IF NOT EXISTS is_drop BOOLEAN DEFAULT false;
 ALTER TABLE public.collections ADD COLUMN IF NOT EXISTS drop_date TIMESTAMPTZ;
