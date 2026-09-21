@@ -32,7 +32,7 @@ export default function AdminDrops() {
 
   async function fetchDrops() {
     setLoading(true)
-    const { data, error } = await supabase.from('collections').select('*').order('created_at', { ascending: false })
+    const { data, error } = await supabase.from('collections').select('*').order('drop_date', { ascending: false, nullsFirst: false })
     if (error) addToast('error', error.message)
     else setDrops((data || []).filter((c: any) => c.is_drop === true || c.drop_date))
     setLoading(false)
