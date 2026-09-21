@@ -27,9 +27,9 @@ export default function AdminDashboard() {
   }, [])
 
   const statCards = [
-    { label: 'Total Sales', value: '$0.00', sub: 'This month', icon: '💳', href: null },
-    { label: 'Active Products', value: String(stats.activeProducts), sub: 'Published to store', icon: '🛍', href: '/admin/products' },
-    { label: 'Waitlist Entries', value: String(stats.waitlistEntries), sub: 'Awaiting restock', icon: '🔔', href: '/admin/waitlist' },
+    { label: 'Total Sales', value: '$0.00', sub: 'This month', href: null },
+    { label: 'Active Products', value: String(stats.activeProducts), sub: 'Published to store', href: '/admin/products' },
+    { label: 'Waitlist Entries', value: String(stats.waitlistEntries), sub: 'Awaiting restock', href: '/admin/waitlist' },
   ]
 
   const quickLinks = [
@@ -44,7 +44,6 @@ export default function AdminDashboard() {
       {/* Greeting */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
         <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-lg flex-shrink-0">
-          ✦
         </div>
         <div>
           <h1 className="font-heading text-lg uppercase tracking-widest text-brand-dark">Welcome back</h1>
@@ -61,11 +60,10 @@ export default function AdminDashboard() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {statCards.map(({ label, value, sub, icon, href }) => {
+        {statCards.map(({ label, value, sub, href }) => {
           const card = (
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow group">
-              <div className="flex items-start justify-between mb-4">
-                <span className="text-2xl">{icon}</span>
+              <div className="flex items-start justify-end mb-4 h-6">
                 {href && (
                   <svg className="w-4 h-4 text-brand-dark/20 group-hover:text-brand-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />

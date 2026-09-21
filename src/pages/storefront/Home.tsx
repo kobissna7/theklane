@@ -316,7 +316,7 @@ function EmailSignup() {
         <p className="font-body text-sm text-brand-dark/50 mb-10">New drops, exclusive access, and early sale previews — direct to your inbox.</p>
         {submitted ? (
           <div className="py-8">
-            <p className="font-heading text-sm uppercase tracking-widest text-brand-secondary">Welcome to the journey ✓</p>
+            <p className="font-heading text-sm uppercase tracking-widest text-brand-secondary">Welcome to the journey</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex gap-0 max-w-md mx-auto shadow-sm">

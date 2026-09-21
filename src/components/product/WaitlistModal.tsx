@@ -245,10 +245,10 @@ export function WaitlistModal({ productId, productName, productSlug, isOpen, onC
                 className={`flex-shrink-0 font-heading text-2xs uppercase tracking-widest px-3 py-1.5 rounded-lg transition-all ${
                   copied
                     ? 'bg-green-100 text-green-700'
-                    : 'bg-brand-secondary/10 text-brand-secondary hover:bg-brand-secondary/20'
+                    : 'bg-brand-black/10 text-brand-black hover:bg-brand-black/20'
                 }`}
               >
-                {copied ? 'Copied ✓' : 'Copy Link'}
+                {copied ? 'Copied' : 'Copy Link'}
               </button>
             </div>
 

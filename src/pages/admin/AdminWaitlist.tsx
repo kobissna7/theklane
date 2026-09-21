@@ -106,7 +106,7 @@ export default function AdminWaitlist() {
 
       {products.length === 0 ? (
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 py-16 text-center">
-          <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-xl">🔔</div>
+          <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-xl"></div>
           <p className="font-heading text-sm uppercase tracking-widest text-brand-dark/40">No waitlist entries yet</p>
           <p className="font-body text-xs text-brand-dark/30 mt-1">When items are out of stock, customers can join the waitlist from the product page.</p>
         </div>
