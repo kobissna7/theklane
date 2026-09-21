@@ -82,7 +82,7 @@ export default function AdminLayout() {
   }
 
   if (!user) {
-    return <Navigate to="/account/login" replace />
+    return <Navigate to="/admin/login" replace />
   }
 
   if (!isAdmin) {
@@ -95,7 +95,7 @@ export default function AdminLayout() {
         </div>
         <h1 className="font-heading text-2xl uppercase tracking-widest mb-3 text-brand-dark">Access Denied</h1>
         <p className="text-brand-dark/50 mb-8 max-w-sm font-body text-sm leading-relaxed">
-          You don't have administrative privileges. Only store admins can access this portal.
+          You don't have administrative privileges. Only store admins can access this portal. Please log in with an admin account.
         </p>
         <Link to="/" className="font-heading text-xs uppercase tracking-widest text-brand-secondary hover:underline">
           Return to Store

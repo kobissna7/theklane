@@ -26,6 +26,7 @@ import AdminCategories from './pages/admin/AdminCategories'
 import AdminCollections from './pages/admin/AdminCollections'
 import AdminDrops from './pages/admin/AdminDrops'
 import AdminWaitlist from './pages/admin/AdminWaitlist'
+import AdminLogin from './pages/admin/AdminLogin'
 function StorefrontLayout() {
   return (
     <div className="flex flex-col min-h-screen">
@@ -58,6 +59,9 @@ export default function App() {
             <Route path="/account" element={<Account />} />
             <Route path="/welcome" element={<Welcome />} />
           </Route>
+
+          {/* Admin Login */}
+          <Route path="/admin/login" element={<AdminLogin />} />
 
           {/* Admin Dashboard */}
           <Route path="/admin" element={<AdminLayout />}>
