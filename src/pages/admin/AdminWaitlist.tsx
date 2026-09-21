@@ -151,9 +151,9 @@ export default function AdminWaitlist() {
                   </div>
                   {product.entries.map(entry => (
                     <div key={entry.id} className="px-6 py-3 grid grid-cols-4 gap-3 border-t border-gray-50 items-center hover:bg-gray-50/50 transition-colors">
-                      <p className="font-body text-sm text-brand-dark truncate">{entry.name || '—'}</p>
+                      <p className="font-body text-sm text-brand-dark truncate">{entry.name || 'N/A'}</p>
                       <p className="font-body text-sm text-brand-dark truncate">{entry.email}</p>
-                      <p className="font-body text-sm text-brand-dark">{entry.size || '—'}</p>
+                      <p className="font-body text-sm text-brand-dark">{entry.size || 'N/A'}</p>
                       <button
                         onClick={() => removeEntry(entry.id)}
                         className="text-2xs text-red-400 hover:text-red-600 uppercase tracking-widest font-heading transition-colors justify-self-end"

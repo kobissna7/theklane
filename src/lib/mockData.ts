@@ -230,7 +230,7 @@ export const mockProducts: Product[] = [
 ]
 
 export const mockReviews: Review[] = [
-  { id: 'rev-1', author: 'Amara K.', rating: 5, body: 'Absolutely stunning. The fabric quality exceeded my expectations — it feels luxurious and the fit is perfect. I have received so many compliments wearing theKlane.', created_at: '2024-03-01T00:00:00Z' },
+  { id: 'rev-1', author: 'Amara K.', rating: 5, body: 'Absolutely stunning. The fabric quality exceeded my expectations, it feels luxurious and the fit is perfect. I have received so many compliments wearing theKlane.', created_at: '2024-03-01T00:00:00Z' },
   { id: 'rev-2', author: 'Zoe M.', rating: 5, body: 'I ordered the Linen Midi Dress and it arrived beautifully packaged. The color is even more gorgeous in person. Will definitely be ordering again!', created_at: '2024-02-15T00:00:00Z' },
   { id: 'rev-3', author: 'Isabelle T.', rating: 5, body: 'theKlane is my new favourite brand. The pieces are timeless and incredibly well-made. Customer service was also wonderful when I needed help with sizing.', created_at: '2024-01-28T00:00:00Z' },
   { id: 'rev-4', author: 'Naomi R.', rating: 5, body: 'The Satin Co-Ord Set is a dream. I wore it to a gala and felt like I stepped out of a fashion editorial. Worth every penny.', created_at: '2024-03-10T00:00:00Z' },

@@ -15,7 +15,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="mt-4 text-sm text-white/60 font-body max-w-xs leading-relaxed">
-              For the woman who has found her voice through fashion. Clothes are not just what we wear — they are who we are.
+              For the woman who has found her voice through fashion. Clothes are not just what we wear. They are who we are.
             </p>
             <div className="mt-6 flex items-center gap-4">
               {['instagram', 'tiktok', 'pinterest'].map(social => (

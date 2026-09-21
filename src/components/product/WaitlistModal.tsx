@@ -63,7 +63,7 @@ export function WaitlistModal({ productId, productName, productSlug, isOpen, onC
   if (!isOpen) return null
 
   const shareUrl = getShareUrl(productSlug)
-  const shareText = `Just spotted "${productName}" at theKlane — join the waitlist or shop the collection:`
+  const shareText = `Just spotted "${productName}" at theKlane. Join the waitlist or shop the collection:`
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -184,13 +184,13 @@ export function WaitlistModal({ productId, productName, productSlug, isOpen, onC
               onClick={() => setStep('share')}
               className="w-full text-center font-heading text-2xs uppercase tracking-widest text-brand-dark/30 hover:text-brand-dark/50 transition-colors py-1"
             >
-              Skip — just share
+              Skip, just share
             </button>
           </form>
         ) : (
           <div className="px-6 pb-6 space-y-5">
             <p className="font-body text-sm text-brand-dark/50 leading-relaxed">
-              Love this piece? Share it with your community — the more eyes, the sooner it might restock.
+              Love this piece? Share it with your community. The more eyes on it, the sooner it might restock.
             </p>
 
             {/* Social share grid */}

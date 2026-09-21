@@ -85,7 +85,7 @@ export default function CategoryPage() {
         {products.length === 0 ? (
           <div className="text-center py-24">
             <p className="font-heading text-2xl text-brand-dark/40 mb-4">No pieces here yet</p>
-            <p className="font-body text-brand-dark/40 mb-8">Check back soon — new drops coming.</p>
+            <p className="font-body text-brand-dark/40 mb-8">Check back soon. New drops coming.</p>
             <Link
               to="/shop"
               className="inline-block bg-brand-secondary text-white px-8 py-3 font-body text-sm hover:bg-brand-secondary/90 transition-colors"

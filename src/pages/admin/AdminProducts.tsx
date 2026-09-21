@@ -245,13 +245,13 @@ export default function AdminProducts() {
           </Field>
           <Field label="Category">
             <select className={selectClass} value={form.category_id} onChange={e => setForm(f => ({ ...f, category_id: e.target.value }))}>
-              <option value="">— None —</option>
+              <option value="">None</option>
               {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </Field>
           <Field label="Add to Collection">
             <select className={selectClass} value={form.collection_id} onChange={e => setForm(f => ({ ...f, collection_id: e.target.value }))}>
-              <option value="">— None —</option>
+              <option value="">None</option>
               {collections.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </Field>

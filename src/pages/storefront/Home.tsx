@@ -329,7 +329,7 @@ function EmailSignup() {
         <h2 className="font-heading font-normal text-3xl sm:text-4xl tracking-wider mb-4 text-brand-dark">
           Be the first to step into KLANÉ
         </h2>
-        <p className="font-body text-sm text-brand-dark/50 mb-10">New drops, exclusive access, and early sale previews — direct to your inbox.</p>
+        <p className="font-body text-sm text-brand-dark/50 mb-10">New drops, exclusive access, and early sale previews, direct to your inbox.</p>
         {submitted ? (
           <div className="py-8">
             <p className="font-heading text-sm uppercase tracking-widest text-brand-secondary">Welcome to the journey</p>
