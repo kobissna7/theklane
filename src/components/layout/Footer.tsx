@@ -11,7 +11,7 @@ export function Footer() {
           <div className="col-span-2 lg:col-span-2">
             <Link to="/" className="inline-block">
               <span className="klane-logo text-white font-logo font-light text-2xl tracking-[0.18em] uppercase select-none">
-                klané
+                KLANÉ
               </span>
             </Link>
             <p className="mt-4 text-sm text-white/60 font-body max-w-xs leading-relaxed">

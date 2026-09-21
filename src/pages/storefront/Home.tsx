@@ -94,7 +94,7 @@ function HeroSection({ videoUrl }: { videoUrl: string }) {
       <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
       <div className="relative h-full flex flex-col items-center justify-end pb-24 px-6 text-center text-white">
         <h1 className="klane-logo font-logo font-light text-7xl sm:text-8xl lg:text-9xl leading-none mb-5 drop-shadow-md text-white">
-          klané
+          KLANÉ
         </h1>
         <p className="font-heading text-xs uppercase tracking-[0.3em] mb-12 drop-shadow-sm opacity-80">
           every becoming begins with a choice
@@ -311,7 +311,7 @@ function EmailSignup() {
       <div className="max-w-xl mx-auto px-6 text-center">
         <p className="font-heading text-xs uppercase tracking-[0.25em] text-brand-secondary/60 mb-4">Join the journey</p>
         <h2 className="font-heading font-normal text-3xl sm:text-4xl tracking-wider mb-4 text-brand-dark">
-          Be the first to step into klané
+          Be the first to step into KLANÉ
         </h2>
         <p className="font-body text-sm text-brand-dark/50 mb-10">New drops, exclusive access, and early sale previews — direct to your inbox.</p>
         {submitted ? (

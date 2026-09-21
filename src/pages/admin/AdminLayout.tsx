@@ -124,7 +124,7 @@ export default function AdminLayout() {
         <div className="px-6 pt-7 pb-6 border-b border-white/5">
           <Link to="/" className="block group" onClick={() => setMobileOpen(false)}>
             <span className="klane-logo text-white font-logo font-light text-xl tracking-[0.22em] uppercase block">
-              klané
+              KLANÉ
             </span>
           </Link>
           <span className="block text-2xs text-white/30 mt-1 uppercase tracking-[0.2em] font-heading">Admin Portal</span>

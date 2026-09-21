@@ -92,7 +92,7 @@ export function Header() {
           {/* Logo center — pure text */}
           <Link to="/" className="absolute left-1/2 -translate-x-1/2">
             <span className="klane-logo text-brand-black font-logo font-light text-2xl sm:text-3xl tracking-[0.18em] uppercase select-none">
-              klané
+              KLANÉ
             </span>
           </Link>
 
