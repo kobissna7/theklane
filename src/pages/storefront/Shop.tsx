@@ -74,9 +74,9 @@ export default function Shop() {
         {/* Main content */}
         <div className="flex-1 min-w-0">
           {/* Sort bar */}
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
             <button
-              className="lg:hidden flex items-center gap-2 font-heading text-xs uppercase tracking-widest border border-brand-gray-light px-4 py-2"
+              className="lg:hidden flex items-center justify-center gap-2 font-heading text-xs uppercase tracking-widest border border-brand-gray-light px-4 py-3 w-full sm:w-auto"
               onClick={() => setFiltersOpen(true)}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -84,12 +84,12 @@ export default function Shop() {
               </svg>
               Filter
             </button>
-            <div className="ml-auto flex items-center gap-3">
+            <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
               <label className="font-heading text-xs uppercase tracking-widest text-brand-gray">Sort</label>
               <select
                 value={sort}
                 onChange={e => setSort(e.target.value as SortOption)}
-                className="border border-brand-gray-light text-sm font-body px-3 py-2 focus:outline-none focus:border-brand-black"
+                className="border border-brand-gray-light text-sm font-body px-3 py-2 focus:outline-none focus:border-brand-black w-full sm:w-auto"
               >
                 {SORT_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
               </select>
@@ -110,6 +110,26 @@ export default function Shop() {
           )}
         </div>
       </div>
+
+      {/* Mobile Filters Drawer */}
+      {filtersOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden flex justify-end">
+          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onClick={() => setFiltersOpen(false)} />
+          <div className="relative w-full max-w-xs h-full bg-white shadow-2xl animate-slide-in-right flex flex-col">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-brand-gray-light">
+              <h2 className="font-heading text-sm uppercase tracking-widest text-brand-black">Filters</h2>
+              <button onClick={() => setFiltersOpen(false)} className="text-brand-gray hover:text-brand-black p-2 -mr-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto px-6 py-6">
+              <FilterSidebar filters={filters} setFilters={setFilters} toggleFilter={toggleFilter} categories={categories} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

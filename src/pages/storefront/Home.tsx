@@ -92,16 +92,16 @@ function HeroSection({ videoUrl }: { videoUrl: string }) {
       </video>
       {/* Gradient overlay - subtle */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
-      <div className="relative h-full flex flex-col items-center justify-end pb-24 px-6 text-center text-white">
-        <h1 className="klane-logo font-logo font-light text-7xl sm:text-8xl lg:text-9xl leading-none mb-5 drop-shadow-md text-white">
+      <div className="relative h-full flex flex-col items-center justify-end pb-16 sm:pb-24 px-6 text-center text-white">
+        <h1 className="klane-logo font-logo font-light text-6xl sm:text-8xl lg:text-9xl leading-none mb-4 sm:mb-5 drop-shadow-md text-white">
           KLANÉ
         </h1>
-        <p className="font-heading text-xs uppercase tracking-[0.3em] mb-12 drop-shadow-sm opacity-80">
+        <p className="font-heading text-xs uppercase tracking-[0.3em] mb-8 sm:mb-12 drop-shadow-sm opacity-80">
           every becoming begins with a choice
         </p>
-        <div className="flex gap-4 flex-wrap justify-center">
+        <div className="flex gap-4 flex-wrap justify-center w-full px-4">
           <Button variant="primary" size="lg" as="a" href="/shop"
-            className="bg-brand-secondary text-white hover:bg-brand-secondary/90 border-none px-10 py-4 tracking-widest uppercase text-xs font-heading">
+            className="bg-brand-secondary text-white hover:bg-brand-secondary/90 border-none px-8 sm:px-10 py-4 tracking-widest uppercase text-xs font-heading w-full sm:w-auto max-w-xs">
             Shop the Collection
           </Button>
         </div>
@@ -323,28 +323,28 @@ function EmailSignup() {
   }
 
   return (
-    <section className="bg-brand-primary/10 border-t border-brand-primary/20 py-24 lg:py-32">
+    <section className="bg-brand-primary/10 border-t border-brand-primary/20 py-20 sm:py-24 lg:py-32">
       <div className="max-w-xl mx-auto px-6 text-center">
         <p className="font-heading text-xs uppercase tracking-[0.25em] text-brand-secondary/60 mb-4">Join the journey</p>
-        <h2 className="font-heading font-normal text-3xl sm:text-4xl tracking-wider mb-4 text-brand-dark">
+        <h2 className="font-heading font-normal text-2xl sm:text-3xl sm:text-4xl tracking-wider mb-4 text-brand-dark">
           Be the first to step into KLANÉ
         </h2>
-        <p className="font-body text-sm text-brand-dark/50 mb-10">New drops, exclusive access, and early sale previews, direct to your inbox.</p>
+        <p className="font-body text-sm text-brand-dark/50 mb-8 sm:mb-10">New drops, exclusive access, and early sale previews, direct to your inbox.</p>
         {submitted ? (
           <div className="py-8">
             <p className="font-heading text-sm uppercase tracking-widest text-brand-secondary">Welcome to the journey</p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="flex gap-0 max-w-md mx-auto shadow-sm">
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-0 max-w-md mx-auto shadow-sm">
             <input
               type="email"
               required
               placeholder="Your email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 bg-white border border-brand-gray-light/40 border-r-0 text-brand-dark placeholder:text-brand-dark/30 px-6 py-4 text-sm font-body focus:outline-none focus:ring-1 focus:ring-brand-secondary"
+              className="flex-1 bg-white border border-brand-gray-light/40 sm:border-r-0 text-brand-dark placeholder:text-brand-dark/30 px-6 py-4 text-sm font-body focus:outline-none focus:ring-1 focus:ring-brand-secondary"
             />
-              <button type="submit"
+            <button type="submit"
               disabled={saving}
               className="bg-brand-secondary text-white px-8 py-4 font-heading text-2xs uppercase tracking-widest hover:bg-brand-secondary/90 transition-colors whitespace-nowrap disabled:opacity-50">
               {saving ? '...' : 'Subscribe'}

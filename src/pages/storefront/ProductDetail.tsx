@@ -101,8 +101,8 @@ export default function ProductDetail() {
         onClose={() => { setWaitlistOpen(false); setShareOpen(false) }}
       />
     )}
-    <div className="bg-white min-h-screen pt-24 pb-32 animate-fade-in">
-      <div className="container mx-auto px-4 lg:px-8">
+    <div className="bg-white min-h-screen pt-20 sm:pt-24 pb-20 sm:pb-32 animate-fade-in">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Breadcrumb (simplified) */}
         <div className="text-xs font-body tracking-wider uppercase text-brand-gray mb-8">
@@ -128,7 +128,7 @@ export default function ProductDetail() {
             
             {/* Thumbnails */}
             {product.product_images && product.product_images.length > 1 && (
-              <div className="grid grid-cols-5 gap-4">
+              <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 sm:gap-4">
                 {product.product_images.map((img) => (
                   <button
                     key={img.id}
@@ -152,7 +152,7 @@ export default function ProductDetail() {
               {isOnSale && <Badge variant="accent">Sale</Badge>}
             </div>
 
-            <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl text-brand-black mb-4 leading-tight">
+            <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-brand-black mb-4 leading-tight">
               {product.name}
             </h1>
             
@@ -277,9 +277,9 @@ export default function ProductDetail() {
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (
-          <div className="mt-32">
-            <h2 className="font-heading text-2xl uppercase tracking-widest text-center mb-12">You May Also Like</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
+          <div className="mt-16 sm:mt-32">
+            <h2 className="font-heading text-xl sm:text-2xl uppercase tracking-widest text-center mb-8 sm:mb-12">You May Also Like</h2>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-8 sm:gap-y-12">
               {relatedProducts.map(rp => (
                 <ProductCard key={rp.id} product={rp} />
               ))}

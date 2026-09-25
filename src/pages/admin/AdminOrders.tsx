@@ -66,7 +66,36 @@ export default function AdminOrders() {
         </div>
       ) : (
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="overflow-x-auto">
+          {/* Mobile cards */}
+          <div className="md:hidden divide-y divide-gray-100">
+            {orders.map(order => (
+              <div key={order.id} className="p-4 space-y-2">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <p className="font-body text-sm font-medium text-brand-dark">{order.first_name} {order.last_name}</p>
+                    <p className="font-body text-xs text-brand-dark/50 truncate">{order.email}</p>
+                  </div>
+                  <span className="font-body text-sm font-semibold text-brand-dark flex-shrink-0">${Number(order.total_amount).toFixed(2)}</span>
+                </div>
+                <div className="flex items-center justify-between gap-3">
+                  <span className="font-heading text-2xs text-brand-dark/40 uppercase tracking-wider">{new Date(order.created_at).toLocaleDateString()}</span>
+                  <select
+                    value={order.status}
+                    onChange={(e) => updateStatus(order.id, e.target.value)}
+                    className="bg-transparent border border-gray-200 rounded-lg px-2 py-1 text-xs font-heading uppercase tracking-widest focus:outline-none focus:border-brand-black"
+                  >
+                    <option value="pending">Pending</option>
+                    <option value="processing">Processing</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Desktop table */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left font-body text-sm">
               <thead className="bg-gray-50 border-b border-gray-100">
                 <tr>

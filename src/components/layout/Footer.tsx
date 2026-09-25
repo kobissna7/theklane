@@ -6,7 +6,7 @@ export function Footer() {
     <footer className="bg-brand-black text-white mt-auto">
       {/* Main footer */}
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand */}
           <div className="col-span-2 lg:col-span-2">
             <Link to="/" className="inline-block">

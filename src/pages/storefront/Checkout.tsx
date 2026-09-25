@@ -105,94 +105,28 @@ export default function Checkout() {
 
   return (
     <div className="bg-brand-cream min-h-screen pt-24 pb-32 animate-fade-in">
-      <div className="container mx-auto px-4 lg:px-8 max-w-6xl">
-        <h1 className="font-heading text-3xl md:text-4xl text-brand-black mb-12 text-center uppercase tracking-widest">Checkout</h1>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+        <h1 className="font-heading text-2xl md:text-4xl text-brand-black mb-8 sm:mb-12 text-center uppercase tracking-widest">Checkout</h1>
         
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          
-          {/* Form Section */}
-          <div className="lg:col-span-7 space-y-12">
-            <form id="checkout-form" onSubmit={handleSubmit} className="space-y-12">
-              
-              {/* Contact Info */}
-              <section>
-                <h2 className="font-heading text-xl uppercase tracking-wider mb-6 pb-2 border-b border-brand-gray-light/30">Contact Information</h2>
-                <div>
-                  <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">Email Address</label>
-                  <input required type="email" name="email" value={formData.email} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
-                </div>
-              </section>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
 
-              {/* Shipping Info */}
-              <section>
-                <h2 className="font-heading text-xl uppercase tracking-wider mb-6 pb-2 border-b border-brand-gray-light/30">Shipping Address</h2>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">First Name</label>
-                    <input required type="text" name="firstName" value={formData.firstName} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
-                  </div>
-                  <div>
-                    <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">Last Name</label>
-                    <input required type="text" name="lastName" value={formData.lastName} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
-                  </div>
-                  <div className="col-span-2">
-                    <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">Address</label>
-                    <input required type="text" name="address" value={formData.address} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
-                  </div>
-                  <div className="col-span-2 sm:col-span-1">
-                    <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">City</label>
-                    <input required type="text" name="city" value={formData.city} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
-                  </div>
-                  <div>
-                    <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">State</label>
-                    <input required type="text" name="state" value={formData.state} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
-                  </div>
-                  <div>
-                    <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">Zip Code</label>
-                    <input required type="text" name="zip" value={formData.zip} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
-                  </div>
-                </div>
-              </section>
-
-              {/* Payment Info */}
-              <section>
-                <h2 className="font-heading text-xl uppercase tracking-wider mb-6 pb-2 border-b border-brand-gray-light/30">Payment Details</h2>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2">
-                    <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">Card Number</label>
-                    <input required type="text" placeholder="0000 0000 0000 0000" name="cardNumber" value={formData.cardNumber} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
-                  </div>
-                  <div>
-                    <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">Expiry (MM/YY)</label>
-                    <input required type="text" placeholder="MM/YY" name="expiry" value={formData.expiry} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
-                  </div>
-                  <div>
-                    <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">CVV</label>
-                    <input required type="text" placeholder="123" name="cvv" value={formData.cvv} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
-                  </div>
-                </div>
-              </section>
-
-            </form>
-          </div>
-
-          {/* Order Summary */}
-          <div className="lg:col-span-5">
-            <div className="bg-brand-cream-dark p-8 sticky top-32">
+          {/* Order Summary — shows first on mobile */}
+          <div className="lg:col-span-5 lg:order-last">
+            <div className="bg-brand-cream-dark p-6 sm:p-8 lg:sticky lg:top-32">
               <h2 className="font-heading text-xl uppercase tracking-wider mb-6">Order Summary</h2>
               
-              <div className="space-y-6 mb-8 max-h-96 overflow-y-auto pr-2">
+              <div className="space-y-6 mb-8 max-h-64 lg:max-h-96 overflow-y-auto pr-2">
                 {items.map(item => {
                   const itemPrice = item.variant.price_override ?? item.product.sale_price ?? item.product.base_price
                   return (
                     <div key={item.variantId} className="flex gap-4">
-                      <div className="w-20 h-24 bg-brand-cream flex-shrink-0">
+                      <div className="w-16 h-20 sm:w-20 sm:h-24 bg-brand-cream flex-shrink-0">
                         {item.product.product_images?.[0] && (
                           <img src={item.product.product_images[0].thumb_url || item.product.product_images[0].url} alt={item.product.name} className="w-full h-full object-cover" />
                         )}
                       </div>
-                      <div className="flex-1 flex flex-col justify-center">
-                        <span className="font-heading text-sm uppercase tracking-wider">{item.product.name}</span>
+                      <div className="flex-1 flex flex-col justify-center min-w-0">
+                        <span className="font-heading text-sm uppercase tracking-wider truncate">{item.product.name}</span>
                         <span className="font-body text-sm text-brand-gray mt-1">
                           {item.variant.size && `Size: ${item.variant.size}`}
                           {item.variant.size && item.variant.color && ' | '}
@@ -228,7 +162,7 @@ export default function Checkout() {
                 <span className="font-body text-2xl">{formatPrice(finalTotal)}</span>
               </div>
 
-              <div className="mt-10">
+              <div className="mt-8">
                 <Button 
                   type="submit" 
                   form="checkout-form" 
@@ -245,6 +179,72 @@ export default function Checkout() {
                 </p>
               </div>
             </div>
+          </div>
+          
+          {/* Form Section */}
+          <div className="lg:col-span-7 lg:order-first space-y-10">
+            <form id="checkout-form" onSubmit={handleSubmit} className="space-y-12">
+              
+              {/* Contact Info */}
+              <section>
+                <h2 className="font-heading text-xl uppercase tracking-wider mb-6 pb-2 border-b border-brand-gray-light/30">Contact Information</h2>
+                <div>
+                  <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">Email Address</label>
+                  <input required type="email" name="email" value={formData.email} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
+                </div>
+              </section>
+
+              {/* Shipping Info */}
+              <section>
+                <h2 className="font-heading text-xl uppercase tracking-wider mb-6 pb-2 border-b border-brand-gray-light/30">Shipping Address</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">First Name</label>
+                    <input required type="text" name="firstName" value={formData.firstName} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
+                  </div>
+                  <div>
+                    <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">Last Name</label>
+                    <input required type="text" name="lastName" value={formData.lastName} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">Address</label>
+                    <input required type="text" name="address" value={formData.address} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
+                  </div>
+                  <div>
+                    <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">City</label>
+                    <input required type="text" name="city" value={formData.city} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
+                  </div>
+                  <div>
+                    <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">State</label>
+                    <input required type="text" name="state" value={formData.state} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
+                  </div>
+                  <div>
+                    <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">Zip Code</label>
+                    <input required type="text" name="zip" value={formData.zip} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
+                  </div>
+                </div>
+              </section>
+
+              {/* Payment Info */}
+              <section>
+                <h2 className="font-heading text-xl uppercase tracking-wider mb-6 pb-2 border-b border-brand-gray-light/30">Payment Details</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="sm:col-span-2">
+                    <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">Card Number</label>
+                    <input required type="text" placeholder="0000 0000 0000 0000" name="cardNumber" value={formData.cardNumber} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
+                  </div>
+                  <div>
+                    <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">Expiry (MM/YY)</label>
+                    <input required type="text" placeholder="MM/YY" name="expiry" value={formData.expiry} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
+                  </div>
+                  <div>
+                    <label className="block font-heading text-xs tracking-widest uppercase text-brand-charcoal mb-2">CVV</label>
+                    <input required type="text" placeholder="123" name="cvv" value={formData.cvv} onChange={handleChange} className="w-full bg-transparent border border-brand-gray-light p-3 focus:outline-none focus:border-brand-black transition-colors font-body" />
+                  </div>
+                </div>
+              </section>
+
+            </form>
           </div>
 
         </div>

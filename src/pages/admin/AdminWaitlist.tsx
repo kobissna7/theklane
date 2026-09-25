@@ -144,22 +144,35 @@ export default function AdminWaitlist() {
               {/* Expanded entries */}
               {expanded === product.id && (
                 <div className="border-t border-gray-50">
-                  <div className="px-6 py-3 bg-gray-50 grid grid-cols-4 gap-3">
+                  <div className="px-4 sm:px-6 py-3 bg-gray-50 hidden sm:grid grid-cols-4 gap-3">
                     {['Name', 'Email', 'Size', ''].map(h => (
                       <span key={h} className="font-heading text-2xs uppercase tracking-widest text-brand-dark/30">{h}</span>
                     ))}
                   </div>
                   {product.entries.map(entry => (
-                    <div key={entry.id} className="px-6 py-3 grid grid-cols-4 gap-3 border-t border-gray-50 items-center hover:bg-gray-50/50 transition-colors">
-                      <p className="font-body text-sm text-brand-dark truncate">{entry.name || 'N/A'}</p>
-                      <p className="font-body text-sm text-brand-dark truncate">{entry.email}</p>
-                      <p className="font-body text-sm text-brand-dark">{entry.size || 'N/A'}</p>
-                      <button
-                        onClick={() => removeEntry(entry.id)}
-                        className="text-2xs text-red-400 hover:text-red-600 uppercase tracking-widest font-heading transition-colors justify-self-end"
-                      >
-                        Remove
-                      </button>
+                    <div key={entry.id} className="px-4 sm:px-6 py-4 border-t border-gray-50 hover:bg-gray-50/50 transition-colors">
+                      {/* Mobile stacked layout */}
+                      <div className="flex items-start justify-between gap-3 sm:hidden">
+                        <div className="min-w-0">
+                          <p className="font-body text-sm font-medium text-brand-dark">{entry.name || 'N/A'}</p>
+                          <p className="font-body text-xs text-brand-dark/60 truncate mt-0.5">{entry.email}</p>
+                          {entry.size && <p className="font-body text-xs text-brand-dark/50 mt-0.5">Size: {entry.size}</p>}
+                        </div>
+                        <button
+                          onClick={() => removeEntry(entry.id)}
+                          className="text-2xs text-red-400 hover:text-red-600 uppercase tracking-widest font-heading transition-colors flex-shrink-0"
+                        >Remove</button>
+                      </div>
+                      {/* Desktop grid layout */}
+                      <div className="hidden sm:grid grid-cols-4 gap-3 items-center">
+                        <p className="font-body text-sm text-brand-dark truncate">{entry.name || 'N/A'}</p>
+                        <p className="font-body text-sm text-brand-dark truncate">{entry.email}</p>
+                        <p className="font-body text-sm text-brand-dark">{entry.size || 'N/A'}</p>
+                        <button
+                          onClick={() => removeEntry(entry.id)}
+                          className="text-2xs text-red-400 hover:text-red-600 uppercase tracking-widest font-heading transition-colors justify-self-end"
+                        >Remove</button>
+                      </div>
                     </div>
                   ))}
                 </div>

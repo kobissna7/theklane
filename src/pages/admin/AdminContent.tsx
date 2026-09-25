@@ -201,15 +201,15 @@ export default function AdminContent() {
           <h2 className="font-heading text-base uppercase tracking-widest text-brand-dark">Hero Video</h2>
         </div>
         <div className="p-6">
-          <div className="flex gap-4 items-start">
-            <div className="w-48 h-28 bg-gray-50 border border-gray-100 overflow-hidden flex-shrink-0 rounded-lg">
+          <div className="flex flex-col sm:flex-row gap-4 items-start">
+            <div className="w-full sm:w-48 h-36 sm:h-28 bg-gray-50 border border-gray-100 overflow-hidden flex-shrink-0 rounded-lg">
               {content.hero_video_url ? (
                 <video src={content.hero_video_url} className="w-full h-full object-cover" muted playsInline />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-xs text-brand-dark/30 font-body">No Video</div>
               )}
             </div>
-            <div className="flex-1 space-y-3">
+            <div className="flex-1 space-y-3 w-full">
               <Field label="Video URL">
                 <input className={inputClass} value={content.hero_video_url} onChange={e => setContent(c => ({ ...c, hero_video_url: e.target.value }))} />
               </Field>
