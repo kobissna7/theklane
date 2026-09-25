@@ -4,13 +4,13 @@ import type { ToastMessage } from '../../lib/types'
 
 interface ToastState {
   toasts: ToastMessage[]
-  addToast: (message: string, type?: ToastMessage['type']) => void
+  addToast: (type: ToastMessage['type'], message: string) => void
   removeToast: (id: string) => void
 }
 
 export const useToastStore = create<ToastState>((set) => ({
   toasts: [],
-  addToast: (message, type = 'info') => {
+  addToast: (type, message) => {
     const id = generateId()
     set(state => ({ toasts: [...state.toasts, { id, message, type }] }))
     setTimeout(() => set(state => ({ toasts: state.toasts.filter(t => t.id !== id) })), 4000)

@@ -6,14 +6,16 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'sm' | 'md' | 'lg'
   fullWidth?: boolean
   loading?: boolean
+  isLoading?: boolean
   as?: 'button' | 'a'
   href?: string
 }
 
 export function Button({
-  variant = 'primary', size = 'md', fullWidth = false, loading = false,
+  variant = 'primary', size = 'md', fullWidth = false, loading = false, isLoading = false,
   className, children, disabled, as: Tag = 'button', href, ...props
 }: ButtonProps) {
+  const isSpinning = loading || isLoading
   const base = 'inline-flex items-center justify-center font-heading font-semibold uppercase tracking-widest transition-all duration-200 ease-brand disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2'
 
   const variants = {
@@ -36,8 +38,8 @@ export function Button({
   }
 
   return (
-    <button className={classes} disabled={disabled || loading} {...props}>
-      {loading ? (
+    <button className={classes} disabled={disabled || isSpinning} {...props}>
+      {isSpinning ? (
         <span className="flex items-center gap-2">
           <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />

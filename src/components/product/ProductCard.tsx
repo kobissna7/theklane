@@ -25,7 +25,7 @@ export function ProductCard({ product }: ProductCardProps) {
     e.preventDefault()
     if (!firstVariant || hasVariants) return
     addItem(product, firstVariant, 1)
-    addToast(`${product.name} added to cart`, 'success')
+    addToast('success', `${product.name} added to cart`)
   }
 
   return (
