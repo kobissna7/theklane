@@ -20,7 +20,7 @@ export function Footer() {
             <div className="mt-6 flex items-center gap-4">
               {['instagram', 'tiktok', 'pinterest'].map(social => (
                 <a key={social} href={`https://${social}.com/theklane`} target="_blank" rel="noopener noreferrer"
-                  className="text-white/40 hover:text-white transition-colors capitalize text-2xs font-heading uppercase tracking-widest">
+                  className="text-white/40 hover:text-white transition-colors text-2xs font-heading uppercase tracking-widest">
                   {social}
                 </a>
               ))}

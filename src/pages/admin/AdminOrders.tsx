@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
 import { useToastStore } from '../../features/toast/toastStore'
 import { Button } from '../../components/ui/Button'
@@ -23,16 +23,16 @@ export default function AdminOrders() {
   async function fetchOrders() {
     setLoading(true)
     const { data, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false })
-    if (error) addToast('error', error.message)
+    if (error) addToast(error.message, 'error')
     else setOrders(data || [])
     setLoading(false)
   }
 
   async function updateStatus(id: string, status: string) {
     const { error } = await supabase.from('orders').update({ status }).eq('id', id)
-    if (error) addToast('error', error.message)
+    if (error) addToast(error.message, 'error')
     else {
-      addToast('success', 'Order status updated')
+      addToast('Order status updated', 'success')
       setOrders(orders.map(o => o.id === id ? { ...o, status } : o))
     }
   }

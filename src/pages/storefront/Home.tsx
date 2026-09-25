@@ -326,7 +326,7 @@ function EmailSignup() {
     <section className="bg-brand-primary/10 border-t border-brand-primary/20 py-20 sm:py-24 lg:py-32">
       <div className="max-w-xl mx-auto px-6 text-center">
         <p className="font-heading text-xs uppercase tracking-[0.25em] text-brand-secondary/60 mb-4">Join the journey</p>
-        <h2 className="font-heading font-normal text-2xl sm:text-3xl sm:text-4xl tracking-wider mb-4 text-brand-dark">
+        <h2 className="font-heading font-normal text-2xl sm:text-4xl tracking-wider mb-4 text-brand-dark">
           Be the first to step into KLANÉ
         </h2>
         <p className="font-body text-sm text-brand-dark/50 mb-8 sm:mb-10">New drops, exclusive access, and early sale previews, direct to your inbox.</p>
