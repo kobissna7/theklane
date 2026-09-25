@@ -43,7 +43,7 @@ export default function Login() {
            if (data.session) {
              navigate('/welcome')
            } else {
-             // Email confirmation required — show a message
+             // Email confirmation required - show a message
              addToast('success', 'Check your email to confirm your account!')
              navigate('/account/login')
            }

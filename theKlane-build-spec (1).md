@@ -1,20 +1,20 @@
-# theKlane — Build Spec (AI IDE Prompt + Wireframe + Architecture)
+# theKlane - Build Spec (AI IDE Prompt + Wireframe + Architecture)
 
-Reference inspiration: fumithelabel.com (Shopify) — editorial fashion e‑commerce with full-bleed hero video, bestseller/collection grids, sale badges, testimonials, email capture w/ discount incentive.
+Reference inspiration: fumithelabel.com (Shopify) - editorial fashion e‑commerce with full-bleed hero video, bestseller/collection grids, sale badges, testimonials, email capture w/ discount incentive.
 
 Stack: **React + TypeScript + Vite + Supabase (DB/Auth/Storage) + Stripe (Payments)**
 
 ---
 
-## 1. THE PROMPT (paste into your AI IDE — Cursor / Windsurf / Claude Code / etc.)
+## 1. THE PROMPT (paste into your AI IDE - Cursor / Windsurf / Claude Code / etc.)
 
 ```
-You are building "theKlane" — a premium women's fashion e-commerce storefront + 
+You are building "theKlane" - a premium women's fashion e-commerce storefront + 
 lightweight admin panel. Build it production-grade, not a demo.
 
 STACK
 - React 18 + TypeScript + Vite
-- Tailwind CSS (utility-first, custom design tokens — no default Tailwind look)
+- Tailwind CSS (utility-first, custom design tokens - no default Tailwind look)
 - React Router v6
 - Supabase: Postgres DB, Auth (email/password + magic link), Storage (product images), 
   Row Level Security enabled on every table
@@ -26,13 +26,13 @@ STACK
 - react-hook-form for forms
 
 BRAND / DESIGN DIRECTION
-- Name: theKlane. Tone: minimal, editorial, confident, high-contrast fashion-forward — 
+- Name: theKlane. Tone: minimal, editorial, confident, high-contrast fashion-forward - 
   similar aesthetic register to Fumi The Label (fumithelabel.com): full-bleed imagery, 
   generous whitespace, thin serif or refined sans headings, uppercase tracked nav labels, 
   muted neutral palette (off-white/black/one accent color), large hero video or lookbook 
   imagery, small elegant "Sale" badges.
 - Mobile-first, fully responsive.
-- No generic Bootstrap/shadcn "default" look — treat typography, spacing rhythm, and 
+- No generic Bootstrap/shadcn "default" look - treat typography, spacing rhythm, and 
   color as brand decisions, not defaults.
 
 CORE FEATURES
@@ -65,12 +65,12 @@ CORE FEATURES
      (size/color) each with independent SKU + stock count + price override.
      Every product has admin-facing toggles (simple switches, not just a form 
      field buried in a dropdown):
-       • Active/Published — controls whether it's visible on the storefront at all
-       • Featured / Best Seller — controls "Best Sellers" rail placement
-       • New Arrival — controls "New Arrivals" placement
-       • On Sale — reveals the sale_price field when on; storefront shows 
+       • Active/Published - controls whether it's visible on the storefront at all
+       • Featured / Best Seller - controls "Best Sellers" rail placement
+       • New Arrival - controls "New Arrivals" placement
+       • On Sale - reveals the sale_price field when on; storefront shows 
          strikethrough pricing + "Sale" badge only when this is on
-       • Track Inventory — if off, item is treated as always-in-stock 
+       • Track Inventory - if off, item is treated as always-in-stock 
          (useful for made-to-order or gift cards) and stock count is ignored
      Toggling any of these should take effect immediately on the storefront, 
      no redeploy or rebuild.
@@ -79,7 +79,7 @@ CORE FEATURES
      nested categories (a category can have a parent, e.g. "Tops" > "Bodysuits") 
      so the storefront mega-menu structure is admin-driven, not hardcoded in 
      the nav component. Same CRUD pattern for Collections (curated groups like 
-     "New Arrivals" / seasonal drops) — admin assigns products to one or more 
+     "New Arrivals" / seasonal drops) - admin assigns products to one or more 
      collections and can reorder collection membership.
    - Inventory: stock levels per variant, manual adjustment log, low-stock 
      threshold alerts.
@@ -91,7 +91,7 @@ CORE FEATURES
    - Site Settings → Announcement Bar: admin can edit the announcement bar 
      message text, an optional link URL, and toggle it ON/OFF with a simple 
      switch. When OFF, the bar must not render at all on the storefront (not 
-     just hidden via CSS — skip it in the layout). Support scheduling 
+     just hidden via CSS - skip it in the layout). Support scheduling 
      (optional start/end date) so a promo can auto-expire. Storefront should 
      fetch this on load (small, cached, public-read query) so toggling is 
      reflected without a redeploy.
@@ -102,12 +102,12 @@ collection/category images, brand/about page imagery)
   converted to WebP before it lands in Supabase Storage. Do this client-side 
   at upload time: read the file, draw it to an offscreen <canvas> (or use 
   createImageBitmap), and export via canvas.toBlob(..., 'image/webp', quality) 
-  — this avoids needing a server-side image library that won't run in a Deno 
+  - this avoids needing a server-side image library that won't run in a Deno 
   Edge Function. Fall back gracefully (upload original) only if the browser 
   doesn't support WebP export, and log/flag that case for the admin.
 - Generate and upload a couple of sizes if practical (e.g. a ~1600px "full" 
   version for PDP and a ~600px "thumb" version for grid cards) to keep the 
-  storefront fast — store both URLs on product_images, or store one URL and 
+  storefront fast - store both URLs on product_images, or store one URL and 
   rely on Supabase Storage image transformations for resizing if available 
   on the project's plan.
 - Reject non-image files client-side before conversion; cap upload size 
@@ -116,16 +116,16 @@ collection/category images, brand/about page imagery)
   on product_images) and a "set as primary" action.
 
 DATA / BACKEND RULES
-- All product/inventory/order data lives in Supabase Postgres — schema below.
+- All product/inventory/order data lives in Supabase Postgres - schema below.
 - Inventory MUST be decremented atomically inside a Postgres function/RPC 
   triggered by the Stripe webhook (never decrement client-side) to prevent 
   overselling under concurrent checkouts.
 - Stripe secret key and webhook signing secret live only in a server 
-  environment (Supabase Edge Function) — NEVER expose in client code.
+  environment (Supabase Edge Function) - NEVER expose in client code.
 - Use a Supabase Edge Function for: 
-   (a) POST /create-checkout-session — builds Stripe line items from cart, 
+   (a) POST /create-checkout-session - builds Stripe line items from cart, 
        applies discount code validation server-side, returns session URL.
-   (b) POST /stripe-webhook — verifies signature, on checkout.session.completed 
+   (b) POST /stripe-webhook - verifies signature, on checkout.session.completed 
        creates order + order_items rows, decrements stock via RPC, marks 
        discount code as used, sends confirmation.
 - RLS: customers can only read/write their own rows (cart, wishlist, orders, 
@@ -152,7 +152,7 @@ Build this iteratively:
    responsive QA.
 
 Ask me clarifying questions before starting only if something is genuinely 
-ambiguous (e.g. exact accent color, payment currency, shipping regions) — 
+ambiguous (e.g. exact accent color, payment currency, shipping regions) - 
 otherwise make reasonable brand-appropriate decisions and note assumptions 
 in the README.
 ```
@@ -227,13 +227,13 @@ in the README.
 │  NEW ARRIVALS                    [Shop All →]│
 │  [card][card][card][card]                    │
 ├─────────────────────────────────────────────┤
-│  CUSTOMER REVIEWS (carousel of 5★ quotes)     │
+│  CUSTOMER REVIEWS (carousel of 5 quotes)     │
 ├─────────────────────────────────────────────┤
 │  Full-bleed lifestyle image + "SHOP ALL" CTA  │
 ├─────────────────────────────────────────────┤
-│  Follow @theklane — IG grid tease             │
+│  Follow @theklane - IG grid tease             │
 ├─────────────────────────────────────────────┤
-│  JOIN THE CLUB — email signup (10% off)       │
+│  JOIN THE CLUB - email signup (10% off)       │
 ├─────────────────────────────────────────────┤
 │  Footer: Company | Help | Legal | Payment     │
 │  icons | Social icons | © theKlane            │
@@ -248,13 +248,13 @@ price (strike + sale price if discounted) → "Choose Options" / "Add to Cart" o
 ```
 ┌───────────────┬───────────────────────────┐
 │               │ Product Title              │
-│  Image        │ ★★★★★ (12 reviews)         │
+│  Image        │  (12 reviews)         │
 │  gallery      │ $XXX  ~~$XXX~~ (if sale)   │
 │  (thumbnails  │ Color: [swatches]          │
 │   + main)     │ Size: [S][M][L] Size Chart │
 │               │ Qty: [-1+]                 │
 │               │ [ ADD TO CART ]            │
-│               │ ⚠ Only 3 left (low stock)  │
+│               │  Only 3 left (low stock)  │
 │               │ ▾ Description               │
 │               │ ▾ Materials & Care          │
 │               │ ▾ Shipping & Returns        │
@@ -440,10 +440,10 @@ site_settings (
 
 RLS for `site_settings`: public `SELECT`; `INSERT`/`UPDATE`/`DELETE` restricted to `role = 'admin'`.
 
-Storefront logic: fetch the `announcement_bar` row on layout mount (React Query, short `staleTime` e.g. 60s so toggling reflects quickly without needing a hard refresh). Render the bar only if `is_enabled = true` AND (no `starts_at`/`expires_at` set, or current time is within that window). If disabled, don't render the layout slot at all — avoid a layout-shift placeholder.
+Storefront logic: fetch the `announcement_bar` row on layout mount (React Query, short `staleTime` e.g. 60s so toggling reflects quickly without needing a hard refresh). Render the bar only if `is_enabled = true` AND (no `starts_at`/`expires_at` set, or current time is within that window). If disabled, don't render the layout slot at all - avoid a layout-shift placeholder.
 
 Key RLS rules:
-- `products`, `product_images`, `product_variants`, `categories`, `collections`, `product_collections` → public `SELECT`; write restricted to `role = 'admin'`. Public storefront queries should additionally filter `is_active = true` in application code (RLS allows read of inactive rows only to admins, or filter client-side — either works, but keep inactive products out of public listing queries).
+- `products`, `product_images`, `product_variants`, `categories`, `collections`, `product_collections` → public `SELECT`; write restricted to `role = 'admin'`. Public storefront queries should additionally filter `is_active = true` in application code (RLS allows read of inactive rows only to admins, or filter client-side - either works, but keep inactive products out of public listing queries).
 - `carts`, `cart_items`, `wishlists`, `orders`, `order_items` → user can only access rows where `user_id = auth.uid()`; admin can read all orders.
 - `discount_codes` → public SELECT only on `code` lookup (validate via Edge Function, not raw client update); writes admin-only.
 - Stock decrements happen via a `SECURITY DEFINER` Postgres function called only from the Stripe webhook Edge Function (service role), never from client.
@@ -496,7 +496,7 @@ src/
     supabase.ts      # client init
     stripe.ts        # client-side Stripe.js loader
     types.ts         # generated Supabase types
-    image.ts         # convertToWebp(file, quality, maxDimension) — canvas-based
+    image.ts         # convertToWebp(file, quality, maxDimension) - canvas-based
                       # conversion util used by every admin upload flow
   supabase/
     migrations/      # SQL schema files
@@ -511,5 +511,5 @@ src/
 
 ## Next steps
 1. Confirm brand palette/accent color and target shipping regions/currency (US only vs international like Fumi's multi-currency).
-2. Paste the Section 1 prompt into your AI IDE and let it scaffold — feed it Section 3's SQL directly for the Supabase migration.
+2. Paste the Section 1 prompt into your AI IDE and let it scaffold - feed it Section 3's SQL directly for the Supabase migration.
 3. I can generate the actual Supabase SQL migration file, the Stripe Edge Functions, or starter React components next if you want to go further right now.

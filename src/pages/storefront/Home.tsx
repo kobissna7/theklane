@@ -90,7 +90,7 @@ function HeroSection({ videoUrl }: { videoUrl: string }) {
       >
         <source src={videoUrl} type="video/mp4" />
       </video>
-      {/* Gradient overlay — subtle */}
+      {/* Gradient overlay - subtle */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
       <div className="relative h-full flex flex-col items-center justify-end pb-24 px-6 text-center text-white">
         <h1 className="klane-logo font-logo font-light text-7xl sm:text-8xl lg:text-9xl leading-none mb-5 drop-shadow-md text-white">

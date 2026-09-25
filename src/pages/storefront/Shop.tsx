@@ -66,7 +66,7 @@ export default function Shop() {
       </div>
 
       <div className="flex gap-10">
-        {/* Sidebar Filters — Desktop */}
+        {/* Sidebar Filters - Desktop */}
         <aside className="hidden lg:block w-56 flex-shrink-0">
           <FilterSidebar filters={filters} setFilters={setFilters} toggleFilter={toggleFilter} categories={categories} />
         </aside>

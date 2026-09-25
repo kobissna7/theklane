@@ -5,6 +5,7 @@ import { AnnouncementBar } from './components/layout/AnnouncementBar'
 import { Header } from './components/layout/Header'
 import { Footer } from './components/layout/Footer'
 import { CartDrawer } from './components/layout/CartDrawer'
+import { SiteWaitlistModal } from './components/layout/SiteWaitlistModal'
 import { ToastContainer as Toast } from './components/ui/Toast'
 
 // Storefront Pages
@@ -39,6 +40,7 @@ function StorefrontLayout() {
       </main>
       <Footer />
       <CartDrawer />
+      <SiteWaitlistModal />
     </div>
   )
 }

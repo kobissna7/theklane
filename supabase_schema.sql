@@ -164,7 +164,8 @@ CREATE POLICY "Admins can update site settings" ON site_settings FOR UPDATE USIN
 CREATE POLICY "Admins can delete site settings" ON site_settings FOR DELETE USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
 
 INSERT INTO public.site_settings (key, message, is_enabled) VALUES 
-('announcement_bar', 'Welcome to KLANÉ. Free shipping on all orders over $200.', true)
+('announcement_bar', 'Welcome to KLANÉ. Free shipping on all orders over $200.', true),
+('show_site_waitlist_modal', 'false', true)
 ON CONFLICT (key) DO NOTHING;
 
 -- Add is_drop column to collections if it doesn't exist (for Drops feature)

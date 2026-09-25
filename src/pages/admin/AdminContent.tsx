@@ -22,6 +22,7 @@ interface ContentData {
   show_featured_banner: boolean
   show_shop_all_banner: boolean
   show_instagram: boolean
+  show_site_waitlist_modal: boolean
 }
 
 const defaultContent: ContentData = {
@@ -40,6 +41,7 @@ const defaultContent: ContentData = {
   show_featured_banner: false,
   show_shop_all_banner: true,
   show_instagram: true,
+  show_site_waitlist_modal: false,
 }
 
 // Toggle switch component
@@ -189,6 +191,7 @@ export default function AdminContent() {
           <SectionToggle id="toggle-testimonials" label="Testimonials" description="Customer reviews carousel" value={content.show_testimonials} onChange={v => setContent(c => ({ ...c, show_testimonials: v }))} />
           <SectionToggle id="toggle-shop-all-banner" label="Full Edit Banner" description="Shop all call-to-action" value={content.show_shop_all_banner} onChange={v => setContent(c => ({ ...c, show_shop_all_banner: v }))} />
           <SectionToggle id="toggle-instagram" label="Instagram Grid" description="Social media feed section" value={content.show_instagram} onChange={v => setContent(c => ({ ...c, show_instagram: v }))} />
+          <SectionToggle id="toggle-site-waitlist-modal" label="Site Waitlist Popup" description="Show popup modal asking visitors to join the waitlist" value={content.show_site_waitlist_modal} onChange={v => setContent(c => ({ ...c, show_site_waitlist_modal: v }))} />
         </div>
       </div>
 
